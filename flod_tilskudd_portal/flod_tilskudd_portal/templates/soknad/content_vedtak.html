@@ -1,0 +1,12 @@
+<script id="vedtak_template" type="text/template">
+    <div class="well">
+        <h2>Vedtak fra Trondheim kommune</h2>
+        <% if (nyeste_vedtak!== null) { %>
+            <button type="button" class="btn btn-default" id="vedtaksbrev_button"><i class="glyphicon glyphicon-download-alt"></i> Eksport</button>
+            <small class="margin-left-general inline-text"><span class="glyphicon glyphicon-info-sign margin-right-small"></span>Her kan du laste ned arkivert vedtak.</small>
+        {% include "common/vedtak_summary.html" %}
+        <% } else { %>
+        Det finnes ikke vedtak for denne søknaden
+        <% } %>
+    </div>
+</script>	 

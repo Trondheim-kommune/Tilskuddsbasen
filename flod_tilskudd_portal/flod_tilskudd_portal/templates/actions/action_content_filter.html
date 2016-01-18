@@ -1,0 +1,41 @@
+<script id='facet_value_checkbox_template' type='text/template'>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" class="facet<%- facetId %>class" value="<%-queryValueName%>"><%- valueName%></label>
+    </div>
+</script>
+
+<script id='facet_value_radio_template' type='text/template'>
+    <div class="radio">
+        <label>
+            <input type="radio" name="facet<%- facetId %>name" class="facet<%- facetId %>class" value="<%-queryValueName%>"><%- valueName%></label>
+    </div>
+</script>
+
+<script id='facet_value_text_template' type='text/template'>
+    <input class="form-control facet<%- facetId %>class" type="text" name="<%- facetName %>" placeholder="<%- valueName%>">
+</script>
+
+<script id="facets_template" type="text/template">
+    <div>
+        <label class="margin-right-small"><%- (typeof facetName !== 'undefined') ? facetName : '' %></label>
+        <a title="Åpne/Lukk filtre" class="toggler glyphicon glyphicon-chevron-down"></a>
+
+        <div class="toggable">
+            <ul class="facet_values" id="facet<%- facetId %>">
+            </ul>
+            <small title="Nullstill" class="reset_facet refreshIcon">Nullstill</small>
+        </div>
+    </div>
+</script>
+
+<script id="filter_action_template" type="text/template">
+    <div class="well margin-top-general">
+        <h2>Filter</h2>
+
+        <div id="facets"></div>
+        <label title="<%- (typeof facetName !== 'undefined') ? facetName : '' %>" id="id_title"></label>
+        <button type="button" id='reset_filters' class="btn btn-default">Nullstill</button>
+        <button type="button" id='cancel_action' class="btn btn-default">Lukk</button>
+    </div>
+</script>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{{ app_name }}{% endblock %}</title>
+
+        {% block css %}
+            {% assets "bootstrap_css" %}
+                <link rel="stylesheet" type="text/css" media="all" href="{{ ASSET_URL }}"/>
+            {% endassets %}
+        {% endblock %}
+        <link rel="icon" type="image/png"
+              href="{{ url_for('static', filename='images/favicon.png') }}">
+
+    </head>
+
+    <body>
+        <div id="page" class="container">
+            <div id="header" class="container-fluid">
+                <a class="brand pull-left-desktop-only" href="/"><img alt="Trondheim Kommune Logo" src="{{ url_for('static', filename='images/tk-logo.png')}}" />TRONDHEIM KOMMUNE <span>{{app_name}}</span></a>
+            </div>
+            <div class="clearfix">
+                <a href="/admin/login" class="btn pull-right underlined-text" type="submit">Logg inn som saksbehandler</a>
+            </div>
+            <div id="page-content" class="content well">
+                <h2>Søk om tilskudd</h2>
+                <h4>
+                    Trondheim kommune yter tilskudd til fritidskulturlivet, idretten, kulturaktører og andre aktører. De økonomiske rammene for tilskuddene følger av bystyrets årlige budsjettvedtak.<br>
+                    <br>
+                    For informasjon om de ulike tilskuddordningene og søknadsfrister <a href="http://trondheim.kommune.no/tilskudd/" target="_blank">se oversikt</a><br>
+                    <br>
+                    For å søke om tilskudd og levere rapport må du logge deg inn i Tilskuddsbasen. Her kan du også se status på søknader som er til behandling.
+                </h4>
+
+                <br>
+
+                <a href="/bruker/login" class="btn btn-large btn-primary" type="submit">Logg inn</a>
+
+            </div>
+
+
+        </div>
+    </body>
+</html>

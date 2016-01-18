@@ -1,0 +1,10 @@
+Hei,
+
+Trondheim kommune har nå behandlet din søknad.
+
+For å se svaret på din søknad kan du logge inn her: https://tilskudd.trondheim.kommune.no/soknad/{{ soknad_id }}
+
+Dette er en automatisk generert e-post som ikke kan besvares.
+
+Med vennlig hilsen
+Trondheim kommune

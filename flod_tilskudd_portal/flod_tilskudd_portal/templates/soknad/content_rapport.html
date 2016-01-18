@@ -1,0 +1,14 @@
+<script id="rapport_template" type="text/template">
+    <div class="well">
+        <h2>Rapport</h2>
+
+        <div id="id_avskrevet_rapportkrav" class="margin-bottom-general"><span class="glyphicon glyphicon-info-sign margin-right-small"></span><strong>Krav om rapport er
+            avskrevet.</strong><br><span id="id_avskrevet_rapportkrav_kommentar"></span></div>
+        <% if (typeof id !== "undefined") { %>
+        <button type="button" class="export_button btn btn-default"><i class="glyphicon glyphicon-download-alt"></i> Eksport</button>
+        {% include "common/rapport_summary.html" %}
+        <% } else { %>
+        Det finnes ikke rapport for denne søknaden
+        <% } %>
+    </div>
+</script>

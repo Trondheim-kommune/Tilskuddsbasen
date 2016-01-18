@@ -1,0 +1,29 @@
+<script id="ny_saksvedlegg_action_template" type="text/template">
+    <form method="post">
+        <div class="padding-general margin-top-general well">
+            <h2>Nytt saksvedlegg</h2>
+
+            <p>
+                Du kan laste opp filer relevant for behandling av søknaden (maksstørrelse: 100Mb).
+            </p>
+
+            <div class="form-inline margin-bottom-general">
+                <input title="Last opp fil. Maks størrelse:100MB" type="file" id="id_upload" name="upload_file"
+                       accept=".pdf, .doc, .docx, .xls, .xlsx, .odt, .ods, .xml, .tiff, .tif, .jpeg, .jpg, .mp2, .mp3, .txt"/>
+
+                <input type="text" id="id_tittel" class="form-control" maxlength="60" placeholder="Tittel/kommentar">
+                <i id="id_filnavn" class="margin-left-small"></i>
+            </div>
+
+            <div class="clearfix control-group">
+                <div class="margin-top-general-mobile-only pull-right-desktop-only">
+                    <small class="margin-right-general pull-left-desktop-only margin-top-small">
+                        <span class="glyphicon glyphicon-warning-sign margin-right-small"></span>Filen som lastes opp er ikke synlig for søkeren.
+                    </small>
+                    <button type="button" id="cancel_action" class="btn btn-default">Avbryt</button>
+                    <button type="button" id="ok_action" class="btn btn-primary">Last opp</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</script>

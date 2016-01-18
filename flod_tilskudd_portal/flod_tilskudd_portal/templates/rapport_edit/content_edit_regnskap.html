@@ -1,0 +1,151 @@
+<script id="rapport_edit_regnskap_template" type="text/template">
+    <div class="col-sm-12 well margin-top-general">
+        <h2>Regnskap</h2>
+
+        <p class="fill-out-notification"><span class="margin-right-small glyphicon glyphicon-exclamation-sign"></span>Fyll ut alle feltene under</p>
+
+        <p></p>
+
+        <form method="post">
+
+            <legend>Utgifter</legend>
+
+            <table class="table stacked">
+                <thead>
+                <tr>
+                    <th>Hva?</th>
+                    <th class="text-right">Budsjett(kr)</th>
+                    <th class="text-right">Regnskap(kr)</th>
+                </tr>
+                </thead>
+                <tbody id="id_utgift">
+
+                </tbody>
+
+                <tfoot>
+                <tr>
+                    <td colspan="3"><a id="add_utgift">+ Oppgi flere</a></td>
+                </tr>
+                <tr class="total">
+                    <td>Total sum</td>
+                    <td class="text-right"><span class="show-on-mobile">Budsjett: </span><span id="id_sum_utgifter"></span>,-</td>
+                    <td colspan="2" class="pull-right"><span class="show-on-mobile">Regnskap: </span><span id="id_sum_regnskap_utgifter"></span>,-</td>
+                </tr>
+                </tfoot>
+            </table>
+
+            <legend class="margin-top-general">Inntekter</legend>
+            <table class="table stacked margin-top-general-mobile-only">
+                <thead>
+                <tr>
+                    <th class="show">Hva</th>
+                    <th class="text-right">Budsjett(kr)</th>
+                    <th class="text-right">Regnskap(kr)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Denne søknaden</td>
+                    <td class="text-right"><span id="id_omsokt_belop"></span>,-</td>
+                    <td class="text-right"><span id="id_vedtatt_belop"></span>,-</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table stacked margin-top-general-mobile-only">
+                <thead>
+                <tr>
+                    <th class="show">Andre tilskuddsordninger</th>
+                </tr>
+                </thead>
+                <tbody id="id_andre_tilskudd">
+                </tbody>
+            </table>
+
+            <div class="block">
+                <a id="add_andre_tilskudd">+ Oppgi flere</a>
+            </div>
+
+            <table class="table stacked">
+                <thead>
+                <tr>
+                    <th class="show">Andre inntekter</th>
+                </tr>
+                </thead>
+                <tbody id="id_andre_inntekter">
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"><a id="add_andre_inntekter">+ Oppgi flere</a></td>
+                    </tr>
+                    <tr class="total">
+                        <td>Total sum</td>
+                        <td class="text-right"><span class="show-on-mobile">Budsjett: </span><span id="id_sum_inntekter"></span>,-</td>
+                        <td colspan="2" class="pull-right"><span class="show-on-mobile">Regnskap: </span><span id="id_sum_regnskap_inntekter"></span>,-</td>
+                    </tr>
+                    <tr class="total">
+                        <td>Balanse</td>
+                        <td class="text-right"><span class="show-on-mobile">Budsjett: </span><span id="id_budsjettbalanse"></span>,-</td>
+                        <td colspan="2" class="pull-right"><span class="show-on-mobile">Regnskap: </span><span id="id_regnskapbalanse"></span>,-</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="form-group margin-top-small">
+                <label for="id_budsjett_avvik">Kommentar hvis avvik mellom budsjett og regnskap</label>
+
+                <div class="pull-right-desktop-only">Maks 300 tegn</div>
+                <textarea class="form-control" id="id_budsjett_avvik" name="budsjett_avvik" maxlength="300"></textarea>
+            </div>
+
+            <div class="form-group margin-top-small">
+                <label for="id_resultat_kommentar">Hva gjøres med over-/underskudd?</label>
+
+                <div class="pull-right-desktop-only">Maks 300 tegn</div>
+                <textarea class="form-control" id="id_resultat_kommentar" name="resultat_kommentar" maxlength="300"></textarea>
+            </div>
+
+            <div class="margin-top-general">
+                <small class="margin-right-general">Skjemaet mellomlagres når du trykker på forrige eller neste.
+                </small>
+                <div class="control-group margin-top-general">
+                    <button type="button" id="previous_button" name="previous_button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> Forrige</button>
+                    <button type="button" id="cancel_button" name="cancel_button" class="btn btn-default">Avbryt</button>
+                    <button type="button" id="save_button" name="save_button" class="btn btn-default">Lagre</button>
+                    <div class="controls pull-right">
+                        <button type="button" id="next_button" name="next_button" class="btn btn-primary">Neste <i class="glyphicon glyphicon-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</script>
+
+
+<script id="regnskap_row_template" type="text/template">
+    <td>
+        <label class="onlyOnMobileLabel" for="id_navn">Hva?</label>
+        <% if (!hasBudsjettbelop()) { %>
+        <input title="Hva" type="text" id="id_navn" maxlength="30" class="form-control" placeholder="Hva">
+        <% } else { %>
+        <input title="Hva" type="text" id="id_navn" maxlength="30" class="form-control" placeholder="Hva" disabled>
+        <% } %>
+    </td>
+    <td class="text-right">
+        <% if (hasBudsjettbelop()) { %>
+        <label class="onlyOnMobileLabel form-inline">Budsjett</label>
+        <% } %>
+        <span id="id_budsjett_belop" class="form-inline"></span>
+    </td>
+    <td>
+        <label class="onlyOnMobileLabel" for="id_belop">Regnskap</label>
+        <input title="Regnskap" type="text" id="id_belop" maxlength="10" class="form-control belop text-right" placeholder="Regnskap">
+    </td>
+    
+    <% if (!hasBudsjettbelop()) { %>
+    <td>
+    	<button type="button" class="pull-right-desktop-only remove_budsjettpost">Fjern</button>
+   	</td>
+    <% } %>
+</script>

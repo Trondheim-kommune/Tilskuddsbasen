@@ -1,0 +1,28 @@
+<script id="trekk_soknad_action_template" type="text/template">
+    <form method="post">
+        <div class="padding-general margin-top-general well">
+            <h2>Trekk søknad</h2>
+
+            <label class="pull-left-desktop-only">Angi årsak til trekk (valgfritt):</label>
+            <span class="pull-right-desktop-only">Maks 700 tegn</span>
+
+            <div class="clearfix">
+                <textarea class="form-control" id="id_trukket_kommentar" name="trukket_kommentar" rows="7" cols="50"
+                          maxlength="700"></textarea>
+            </div>
+            <div class="clearfix control-group">
+
+                <div class="margin-top-general-mobile-only pull-right-desktop-only">
+                    <small class="margin-right-general pull-left-desktop-only margin-top-small">
+                        <span class="glyphicon glyphicon-warning-sign margin-right-small"></span>Søknaden vil bli
+                        trukket og
+                        avsluttet
+                    </small>
+                    <button type="button" id="cancel_action" class="btn btn-default">Avbryt</button>
+                    <button type="button" id="ok_action" class="btn btn-danger">Trekk søknad</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</script>

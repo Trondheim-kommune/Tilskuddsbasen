@@ -1,0 +1,114 @@
+<script id="budsjett_template" type="text/template">
+    <div class="col-sm-12 well margin-top-general">
+        <h2>Budsjett</h2>
+        <p class="fill-out-notification"><span class="margin-right-small glyphicon glyphicon-exclamation-sign"></span>Fyll ut alle feltene under</p>
+        <p class="preformatted"><%- tilskuddsordning.budsjettekst %></p>
+
+        <form method="post">
+
+            <h2>Utgifter</h2>
+            <small class="margin-top-general">Oppgi alle planlagte utgifter. Eksempler: Leie av lokaler, lyd, lys, markedsføring, innkjøp av utstyr, innkjøp av mat/drikke, honorar, transport. Denne listen er ikke uttømmende.</small>
+
+            <table class="table stacked">
+                <thead>
+                <tr>
+                    <th>Hva?</th>
+                    <th>Beløp</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody id="id_utgift">
+
+                </tbody>
+            </table>
+
+            <div class="margin-bottom-general">
+                <a id="add_utgift">+ Oppgi flere</a>
+                <div class="total">
+                    <strong>Total sum</strong>
+                    <strong class="pull-right" id="id_sum_utgifter">0</strong>
+                </div>
+            </div>
+
+
+            <h2>Inntekter</h2>
+            <div class="row">
+                <div class="margin-top-general col-sm-12">
+                    <label for="id_omsokt_belop">Søknadsbeløp denne søknad:</label>
+                </div>
+                <div class=" col-sm-3">
+                    <input id="id_omsokt_belop" type="text" maxlength="10" class="form-control text-right">
+                </div>
+            </div>
+            <h2 class="margin-top-general">Andre tilskuddsordninger</h2>
+            <small class="margin-top-general">Oppgi alle tilskudd som dere har søkt om og alle tilskudd som dere eventuelt har fått innvilget.</small>
+            <table class="table stacked margin-top-general-mobile-only">
+                <thead>
+                <tr>
+                    <th>Hva?</th>
+                    <th>Beløp(kr)</th>
+                </tr>
+                </thead>
+                <tbody id="id_andre_tilskudd">
+                </tbody>
+            </table>
+
+            <div class="block">
+                <a id="add_andre_tilskudd">+ Oppgi flere</a>
+            </div>
+
+            <h2 class="margin-top-general">Andre inntekter</h2>
+            <small class="margin-top-general">Oppgi alle planlagte inntekter. Eksempler: Salgsinntekter, billettinntekter, egne midler, egenandel fra deltakere, sponsorinntekter. Denne listen er ikke uttømmende.</small>
+            <table class="table stacked">
+                <thead>
+                <tr>
+                    <th>Hva?</th>
+                    <th>Beløp(kr)</th>
+                </tr>
+                </thead>
+                <tbody id="id_andre_inntekter">
+                </tbody>
+            </table>
+
+            <a id="add_andre_inntekter">+ Oppgi flere</a>
+            <div class="total">
+                <strong>Total sum</strong>
+                <strong class="pull-right" id="id_sum_inntekter">0</strong>
+            </div>
+
+            <div class="total">
+                <strong>Budsjettbalanse</strong>
+                <strong class="pull-right" id="id_budsjettbalanse">0</strong>
+            </div>
+
+            <div class="margin-top-general">
+                <small class="margin-right-general">Skjemaet mellomlagres når du trykker på forrige eller neste.
+                </small>
+                <div class="control-group margin-top-general">
+                    <button type="button" id="previous_button" name="previous_button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> Forrige</button>
+                    <button type="button" id="cancel_button" class="btn btn-default">Avbryt</button>
+                    <button type="button" id="save_button" class="btn btn-default">Lagre</button>
+                    <div class="controls pull-right">
+                        <button type="button" id="next_button" name="next_button" class="btn btn-primary">Neste <i class="glyphicon glyphicon-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</script>
+
+
+<script id="budsjett_row_template" type="text/template">
+
+        <td>
+            <input title="Navn" type="text" id="id_navn" maxlength="30" class="form-control" placeholder="Navn">
+        </td>
+        <td>
+            <input title="Beløp" type="text" id="id_belop" maxlength="10" class="form-control belop text-right" placeholder="Beløp">
+        </td>
+        <td>
+            <button type="button" class="btn btn-default pull-right-desktop-only remove_budsjettpost">Fjern</button>
+        </td>
+
+</script>

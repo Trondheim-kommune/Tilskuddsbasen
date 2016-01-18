@@ -1,0 +1,93 @@
+<script type="text/template" id="saksbehandler_soknadsliste_table_template">
+    <div class="well soknader-page col-sm-12">
+        <form method="post">
+            <div class="col-sm-8 no-padding-left">
+                <h2>Søknader</h2>
+            <button type="button" class="lagre_innstilling_button  btn btn-default">Lagre innstilt beløp</button>
+            <button type="button" class="lagre_vedtak_button  btn btn-default">Lagre vedtatt beløp</button>
+            <button type="button" class="godkjenn_vedtak_button  btn btn-default">Godkjenn alle</button>
+            <button type="button" class="tilbake_til_innstilling_button  btn btn-default">Send alle tilbake til saksbehandler</button>
+            <button type="button" class="export_button  btn btn-default"><i class="glyphicon glyphicon-download-alt"></i> Eksport</button>
+            </div>
+            <div class="col-sm-4 no-padding-right">
+                <div id="id_tilskuddsordning" class="form-horizontal compact">
+                <div class="form-group">
+                    <label id="id_tilskuddsordning_navn" class="col-sm-12 control-label"></label>
+                    </div>
+                <div class="form-group">
+                    <label for="id_tilskuddsordning_budsjett" class="col-sm-6 control-label">Budsjett</label>
+                    <div class="col-sm-6 form-control-static text-right" id="id_tilskuddsordning_budsjett"></div>
+                </div>
+                <div class="form-group">
+                    <label for="id_tilskuddsordning_vedtatt_belop" class="col-sm-6 control-label">Vedtatt</label>
+                    <div class="col-sm-6 form-control-static text-right" id="id_tilskuddsordning_vedtatt_belop"></div>
+                </div>
+                <div class="form-group">
+                    <label for="id_tilskuddsordning_gjenstoende_belop" class="col-sm-6 control-label">Gjenstående</label>
+                    <div class="col-sm-6 form-control-static text-right" id="id_tilskuddsordning_gjenstoende_belop"></div>
+                </div>
+                </div>
+            </div>
+            <div class="table-responsive margin-top-small col-sm-12 no-padding-left no-padding-right">
+                <table class="table odd-even-table">
+                    <thead>
+                    <tr>
+                        <th>Søker</th>
+                        <th>Aktivitet/prosjekt</th>
+                        <th>Saksnummer</th>
+                        <th></th>
+                        <th>Status</th>
+                        <th>Søknadsbeløp</th>
+                        <th>Innstilt beløp</th>
+                        <th>Vedtatt beløp</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="list_soknader">
+                    </tbody>
+
+                    <tfoot id="aggr_soknader">
+                    <tr>
+                        <td tabindex="0">-</td>
+                        <td tabindex="0">-</td>
+                        <td tabindex="0">-</td>
+                        <td tabindex="0">-</td>
+                        <td tabindex="0" class="text-right"><b>Sum kr</b></td>
+                        <td tabindex="0" id="id_sum_omsokt_belop" class="text-right"></td>
+                        <td tabindex="0" id="id_sum_innstilt_belop" class="text-right"></td>
+                        <td tabindex="0" id="id_sum_vedtatt_belop" class="text-right"></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col-sm-12 no-padding-left no-padding-right">
+            <button type="button" class="lagre_innstilling_button  btn btn-default">Lagre innstilt beløp</button>
+            <button type="button" class="lagre_vedtak_button  btn btn-default">Lagre vedtatt beløp</button>
+            <button type="button" class="godkjenn_vedtak_button  btn btn-default">Godkjenn alle</button>
+            <button type="button" class="tilbake_til_innstilling_button  btn btn-default">Send alle tilbake til saksbehandler</button>
+                </div>
+        </form>
+    </div>
+
+    <div class="modal fade" id="merknad_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="saksbehandler_soknadsliste_tablerow_template">
+    <td tabindex="0" class="row_clicked"><% if (typeof(organisation) !== 'undefined') { %><%- organisation.name %><% } %></td>
+    <td tabindex="0" class="row_clicked"><%- prosjektnavn %></td>
+    <td tabindex="0" class="row_clicked"><%- id %></td>
+
+    <td tabindex="0" class="merknad_felt"><a title="Klikk for å vise merknad" href="#" class="merknad_info glyphicon glyphicon-info-sign"></a><span class="id_intern_merknad hidden"></span></td>
+
+    <td tabindex="0" class="row_clicked"><%- status %></td>
+    <td tabindex="0" class="row_clicked text-right"><%- omsokt_belop %></td>
+    <td tabindex="0"><input type="text" id="id_innstilt_belop" class="id_innstilt_belop text-right" maxlength="10" size="10"></td>
+    <td tabindex="0"><input type="text" id="id_vedtatt_belop" class="id_vedtatt_belop text-right" maxlength="10" size="10"></td>
+</script>

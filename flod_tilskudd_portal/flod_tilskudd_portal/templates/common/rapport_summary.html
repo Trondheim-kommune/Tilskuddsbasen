@@ -1,0 +1,213 @@
+<form class="form" role="form">
+    <div class="summary-section">
+        <p class="summary-section-title">Gjennomføring</p>
+
+        <div class="form-group ">
+            <label for="id_prosjekt_gjennomforing" class="control-label">Ble prosjektet eller aktiviteten
+                gjennomført i henhold til søknaden?</label>
+
+            <div>
+                <p class="form-control-static" id="id_prosjekt_gjennomforing"></p>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <% if(arrangement.length>0) { %>
+            <label for="id_arrangement" class="control-label no-padding-top">Sted og tid</label>
+
+            <div>
+                <ul id="id_arrangement">
+                    <%_.each(arrangement, function(arrangementet) { %>
+                    <li><%- arrangementet.sted %> , <% if(arrangementet.tidspunkt) { %> <%- arrangementet.tidspunkt %>
+                        <% }
+                        else { %> <%- Tilskudd.formatDato(arrangementet.start_dato) + " til " + Tilskudd.formatDato(arrangementet.slutt_dato) %> <%} %>
+                    </li>
+                    <%});%>
+                </ul>
+            </div>
+            <% } else { %>
+            <label for="id_arrangement" class="control-label">Sted og tid</label>
+
+            <div>
+                <p class="form-control-static">Ingen arrangement</p>
+            </div>
+            <% } %>
+        </div>
+        <div class="form-group ">
+            <label for="id_prosjekt_avvik" class="control-label">Avvik i forhold til søknaden?</label>
+
+            <div>
+                <p class="form-control-static" id="id_prosjekt_avvik"></p>
+            </div>
+        </div>
+    </div>
+</form>
+<form class="form-horizontal" role="form">
+    <div class="summary-section">
+        <p class="summary-section-title">Regnskap</p>
+
+        <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-1 dotted-frame">
+                <div class="col-md-6 table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Utgifter</th>
+                            <th class="text-right">Budsjett</th>
+                            <th class="text-right">Regnskap</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <%
+                        var utgifter = okonomipostCollection.filterOkonomipost("Utgift");
+                        _.each(utgifter, function(utgift) {
+                        %>
+                        <tr>
+                            <td><%- utgift.get("navn") %></td>
+                            <td class="text-right"><%- utgift.getBelopOfType('Budsjett') %></td>
+                            <td class="text-right"><%- utgift.getBelopOfType('Regnskap') %></td>
+                        </tr>
+                        <%
+                        });
+                        %>
+                        </tbody>
+                        <tfoot>
+                        <tr class="total">
+                            <td>Totalt</td>
+                            <td class="text-right" id="id_sum_utgifter"></td>
+                            <td class="text-right" id="id_sum_regnskap_utgifter"></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="col-md-6 table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Inntekter</th>
+                            <th>Budsjett</th>
+                            <th>Regnskap</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Denne søknaden</td>
+                            <td class="text-right"><%- soknadModel.get('omsokt_belop') %></td>
+                            <td class="text-right">
+                                <% if (soknadModel.getSisteVedtak() !== undefined) {  %>
+                                    <%- soknadModel.getSisteVedtak().vedtatt_belop %>
+                                <% } %>
+                            </td>
+
+
+                        </tr>
+                        <%
+                        var inntekter = okonomipostCollection.filterOkonomipost("Inntekt");
+                        _.each(inntekter, function(inntekt) {
+                        %>
+                        <tr>
+                            <td><%- inntekt.get("navn") %></td>
+                            <td class="text-right"><%- inntekt.getBelopOfType('Budsjett') %></td>
+                            <td class="text-right"><%- inntekt.getBelopOfType('Regnskap') %></td>
+                        </tr>
+                        <%
+                        });
+                        %>
+                        </tbody>
+                        <tfoot>
+                        <tr class="total">
+                            <td>Totalt</td>
+                            <td class="text-right" id="id_sum_inntekter"></td>
+                            <td class="text-right" id="id_sum_regnskap_inntekter"></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="id_regnskapbalanse" class="control-label col-sm-3">Regnskapsbalanse</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_regnskapbalanse"></p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="id_budsjett_avvik" class="control-label col-lg-3">Kommentar hvis avvik mellom busjett og
+                regnskap</label>
+
+            <div class="col-sm-9 ">
+                <p class="form-control-static" id="id_budsjett_avvik"></p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="id_resultat_kommentar" class="control-label col-lg-3">Hva gjøres med
+                over-/underskudd?</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_resultat_kommentar"></p>
+            </div>
+        </div>
+    </div>
+</form>
+<form class="form-horizontal" role="form">
+    <div class="summary-section">
+        <p class="summary-section-title">Vedlegg</p>
+
+        <div class="form-group">
+            <% if (vedlegg.length >0) { %>
+            <label for="id_vedlegg" class="col-md-3 control-label no-padding-top">Opplastede filer</label>
+
+            <div class="col-sm-9" id="id_vedlegg">
+                <ul>
+                    <%
+                    _.each(vedlegg, function(vedlegget) {
+                    %>
+                    <li><a class="margin-right-small" href="/api/sak/v1/vedlegg/<%- vedlegget.id %>"><%-
+                    vedlegget.filnavn%></a>
+                    <% if(vedlegget.beskrivelse !== undefined && vedlegget.beskrivelse !== null && vedlegget.beskrivelse
+                    !== ""){ %>
+                    : <%-vedlegget.beskrivelse %>
+                    <% } %>
+                    </li>
+                    <%});%>
+                </ul>
+            </div>
+            <% } else { %>
+            <label for="id_vedlegg" class="col-md-3 control-label">Opplastede filer</label>
+
+            <div class="col-sm-9" id="id_vedlegg">
+                <p class="form-control-static">Ingen</p>
+            </div>
+            <% } %>
+        </div>
+        <div class="form-group no-padding-top">
+            <% if (vedlagtlink.length >0) { %>
+            <label for="id_vedlagt_links" class="col-md-3 control-label no-padding-top">Filer publisert andre
+                steder</label>
+
+            <div class="col-sm-9" id="id_vedlagt_links">
+                <ul>
+                    <% _.each(vedlagtlink, function(vedlagtlinken) { %>
+                    <li>
+                        <a href="<%- vedlagtlinken.navn %>"><%- vedlagtlinken.navn%></a>:
+                        <%- vedlagtlinken.beskrivelse %>
+                        <% if(vedlagtlinken.passord !== undefined && vedlagtlinken.passord !== null &&
+                        vedlagtlinken.passord
+                        !== ""){ %>
+                        (brukernavn og passord: '<%- vedlagtlinken.passord %>')
+                        <% } %>
+                    </li>
+                    <% });%>
+                </ul>
+            </div>
+            <% } else { %>
+            <label for="id_vedlagt_links" class="col-md-3 control-label">Filer publisert andre steder</label>
+
+            <div class="col-sm-9" id="id_vedlagt_links">
+                <p class="form-control-static">Ingen</p>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</form>

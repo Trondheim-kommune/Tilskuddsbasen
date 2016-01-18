@@ -1,0 +1,12 @@
+Hei,
+
+Trondheim kommune bekrefter å ha mottatt din søknad om tilskudd. Behandlingstiden er oppgitt på våre nettsider www.trondheim.kommune.no/tilskudd
+
+Svar på søknaden blir sendt til denne e-post-adressen.
+
+For å se status på din søknad kan du logge inn her: https://tilskudd.trondheim.kommune.no/soknad/{{ soknad_id }}
+
+Dette er en automatisk generert e-post som ikke kan besvares.
+
+Med vennlig hilsen
+Trondheim kommune

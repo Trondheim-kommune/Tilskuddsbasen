@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block css %}
+    {{ super() }}
+{% endblock %}
+
+{% block templates %}
+    {{ super() }}
+
+    {% include "tilskudd_layout_template.html" %}
+    {% include "common/action_content.html" %}
+    {% include "common/menu_content.html" %}
+    {% include "common/content_edit_arrangement_row.html" %}
+    {% include "common/content_vedlegg.html" %}
+    {% include "actions/action_content_slett_soknad.html" %}
+    {% include "actions/action_content_trekk_soknad.html" %}
+    {% include "actions/action_content_send_inn_soknad.html" %}
+    {% include "actions/action_content_send_tilbake_til_saksbehandling.html" %}
+    {% include "soknad_edit/content_innledning.html" %}
+    {% include "soknad_edit/content_om_soker.html" %}
+    {% include "soknad_edit/content_beskrivelse.html" %}
+    {% include "soknad_edit/content_budsjett.html" %}
+    {% include "soknad_edit/soknad_edit_title.html" %}
+    {% include "soknad_edit/content_annet.html" %}
+    {% include "soknad_edit/content_sammendrag.html" %}
+
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+
+    {% assets "soknad_edit_js_libs" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    <script type="text/javascript">
+
+        (function (ns) {
+            "use strict";
+            // layout and start
+            /////////////////////
+
+            var layout = new ns.TilskuddLayout();
+
+            // Modellen for alle views
+            var soknadModel = new ns.SoknadModel({'id':{{ id }}});
+            // Note: Hooking function on here since we may not use it in other apps than soknadwizard?
+
+            var editSoknadTitleView = new ns.EditSoknadTitleView({model: soknadModel});
+
+            // Setup actions
+            //////////////////
+
+            var actionMenuElements = new ns.SoknadActionCollection([], {'soknad_id': {{id}}});
+            var actionMenuElementsPromise = actionMenuElements.fetch();
+
+            var actionMenuTitleToContentView = [
+                        {
+                            itemId: 'sendinn',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.SendInnSoknadActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'sendinn', 'soknad_id': soknadModel.id})
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'send_tilbake_til_saksbehandling',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.GeneralActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({
+                                                    'id': 'send_tilbake_til_saksbehandling', 'soknad_id': soknadModel.id,
+                                                    template: "#send_tilbake_til_saksbehandling_action_template"
+                                                })
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'slett',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.SlettSoknadActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'slett', 'soknad_id': soknadModel.id})
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'trekk',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.TrekkSoknadActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'trekk', 'trukket_kommentar': '', 'soknad_id': soknadModel.id})
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'rapporter',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.PlaceholderActionView(
+                                            {
+                                                model: new Backbone.Model(
+                                                        {
+                                                            placeholder_title: "Rapporter"
+                                                        })
+                                            }));
+                                }
+                            }
+
+                        }
+                    ]
+                    ;
+
+            var actionMenuView = new ns.ActionMenuView({
+                contentRegion: layout.actionarea,
+                collection: actionMenuElements,
+                childViewOptions: function (model, index) {
+                    return actionMenuTitleToContentView;
+                }
+            });
+
+            // Setup left menu
+            //////////////////
+
+            var leftMenuElements = new ns.MenuElementCollection([
+                {"title": "Innledning", "id": "innledning"},
+                {"title": "Om søker", "id": "om_soker"},
+                {"title": "Beskrivelse", "id": "beskrivelse"},
+                {"title": "Budsjett", "id": "budsjett"},
+                {"title": "Vedlegg", "id": "vedlegg"},
+                {"title": "Annet", "id": "annet"},
+                {"title": "Sammendrag", "id": "sammendrag"}
+            ]);
+            var leftMenuTitleToContentView = [
+                {
+                    itemId: 'innledning',
+                    contentView: {
+                        newInstance: function (callback) {
+                            soknadModel.fetch({
+                                'success': function () {
+                                    callback(new ns.InnledningView(
+                                            {
+                                                model: soknadModel
+                                            }));
+                                }
+                            });
+                        }
+                    }
+                },
+                {
+                    itemId: 'om_soker',
+                    contentView: {
+                        newInstance: function (callback) {
+                            var person_id = window.loggedInPerson.get('id');
+                            soknadModel.fetch({
+                                'success': function () {
+                                    callback(new ns.OmSokerView(
+                                            {
+                                                model: soknadModel,
+                                                my_organisations: new ns.MinOrganisasjonCollection([], {'person_id': person_id}),
+                                                contact_person: new ns.PersonModel({'id': person_id})
+                                            }));
+                                }
+                            });
+                        }
+                    }
+                },
+                {
+                    itemId: 'beskrivelse',
+                    contentView: {
+                        newInstance: function (callback) {
+                            soknadModel.fetch({
+                                'success': function () {
+                                    callback(new ns.BeskrivelseView(
+                                            {
+                                                model: soknadModel,
+                                                collection: new Backbone.Collection(soknadModel.get("arrangement"))
+                                            }));
+                                }
+                            });
+                        }
+                    }
+                },
+                {
+                    itemId: 'budsjett',
+                    contentView: {
+                        newInstance: function (callback) {
+                            soknadModel.fetch({
+                                'success': function () {
+                                    callback(new ns.BudsjettView(
+                                            {
+                                                model: soknadModel,
+                                                collection: new ns.OkonomipostCollection(soknadModel.get("okonomipost"))
+                                            }));
+                                }
+                            });
+                        }
+                    }
+                },
+                {
+                    itemId: 'vedlegg',
+                    contentView: {
+                        newInstance: function (callback) {
+                            soknadModel.fetch({
+                                'success': function () {
+                                    callback(new ns.VedleggLayout(
+                                            {
+                                                model: soknadModel,
+                                                parentObject: 'soknad'
+                                            }));
+                                }
+                            });
+                        }
+                    }
+                },
+                {
+                    itemId: 'annet',
+                    contentView: {
+                        newInstance: function (callback) {
+                            soknadModel.fetch({
+                                'success': function () {
+                                    callback(new ns.AnnetView(
+                                            {
+                                                model: soknadModel
+                                            }));
+                                }
+                            });
+                        }
+                    }
+                },
+                {
+                    itemId: 'sammendrag',
+                    contentView: {
+                        newInstance: function (callback) {
+                            soknadModel.fetch({
+                                'success': function () {
+                                    callback(new ns.SammendragView(
+                                            {
+                                                model: soknadModel
+                                            }));
+                                }
+                            });
+                        }
+                    }
+                }
+            ];
+
+            var leftMenuView = new ns.LeftMenuView({
+                urlRedirectOnCancel: "/soknad/" + soknadModel.id,
+                contentRegion: layout.content,
+                collection: leftMenuElements,
+                childViewOptions: function (model, index) {
+                    return leftMenuTitleToContentView;
+                }
+
+            });
+
+            ns.TilskuddApp.start({
+                pageContent: layout
+            });
+
+            $.when(actionMenuElementsPromise).then(
+                    function () {
+                        layout.menu.show(leftMenuView);
+                        layout.actionbar.show(actionMenuView);
+                        layout.title.show(editSoknadTitleView);
+                        ns.TilskuddApp.vent.trigger("tilskudd:ready");
+                    },
+                    function () {
+                        console.error("error loading");
+                    });
+
+
+        }(Tilskudd));
+    </script>
+{% endblock %}
+

@@ -1,0 +1,295 @@
+<html>
+<head>
+    <style>
+        tr.total {
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            padding: 3px 0 1px 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Denne søknaden</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th width="20%"></th>
+        <th width="80%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Saksnummer</td>
+        <td>{{ id }}</td>
+    </tr>
+    <tr>
+        <td>Tilskuddsordning</td>
+        <td>{{ tilskuddsordning.navn }}</td>
+    </tr>
+    <tr>
+        <td>Søknadsfrist</td>
+        <td>{% if tilskuddsordning.soknadsfrist %}{{ tilskuddsordning.soknadsfrist }}{% else %}Ingen{% endif %}</td>
+    </tr>
+    <tr>
+        <td>Rapportfrist</td>
+        <td>
+            {% for item in vedtak|sort_vedtak %}
+                {% if loop.first %}
+                    {{ item.rapportfrist|strftime }}
+                {% endif %}
+            {% endfor %}
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+{#
+{% for item in vedtak|sort_vedtak %}
+        {{ item }}
+        {{ item.id }}
+    {{ item.vedtaksdato }}
+    {{ item.rapportfrist }}
+    <br>
+{% endfor %}
+#}
+
+
+
+<h1>Om søker</h1>
+<table>
+    <thead>
+    <tr>
+        <th width="20%"></th>
+        <th width="80%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Søker</td>
+        <td>{% if organisation %}{{ organisation.name }}{% endif %}</td>
+    </tr>
+    <tr>
+        <td>Organisasjonsnummer</td>
+        <td>{% if organisation and organisation.org_number %}{{ org_number }}{% else %}Uten organisasjonsnummer{% endif %}</td>
+    </tr>
+
+    <tr>
+        <td>Organisasjonstelefon</td>
+        <td>{% if organisation and organisation.phone_number %}{{ organisation.phone_number }}{% endif %}</td>
+    </tr>
+
+    <tr>
+        <td>Organisasjons e-post</td>
+        <td>{% if organisation and organisation.email_address %}{{ organisation.email_address }}{% endif %}</td>
+    </tr>
+
+    <tr>
+        <td>Bankkonto</td>
+        <td>{{ kontonummer }}</td>
+    </tr>
+
+    <tr>
+        <td>Kontaktperson</td>
+        <td>{{ person.name }}</td>
+    </tr>
+
+    <tr>
+        <td>Telefon</td>
+        <td>{{ telefon }}</td>
+    </tr>
+
+    <tr>
+        <td>E-post</td>
+        <td>{{ epost }}</td>
+    </tr>
+
+    <tr>
+        <td>Beskrivelse av organisasjon</td>
+        <td>{% if organisation and organisation.description %}{{ organisation.description }}{% endif %}</td>
+    </tr>
+
+
+    </tbody>
+</table>
+
+<h1>Beskrivelse</h1>
+<table>
+    <thead>
+    <tr>
+        <th width="20%"></th>
+        <th width="80%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Navn på prosjekt/aktivitet</td>
+        <td>{{ prosjektnavn }}</td>
+    </tr>
+    <tr>
+        <td>Hvem er vi (valgfritt)</td>
+        <td>{{ om_oss }}</td>
+    </tr>
+    <tr>
+        <td>Hva skal tilskuddet brukes til?</td>
+        <td>{{ beskrivelse }}</td>
+    </tr>
+    <tr>
+        <td style="vertical-align: top;">Hva vi ønsker å oppnå med prosjektet/aktiviteten</td>
+        <td>{{ maalsetting }}</td>
+    </tr>
+
+    <tr>
+        <td>Sted og tid</td>
+        <td>
+            {% for item in arrangement|sort %}
+                {% if not loop.first %}<br>{% endif %}
+                {{ item.sted }}, {% if item.start_dato %}{{ item.start_dato|strftime }} til {{ item.slutt_dato|strftime }}{% else %}{{ item.tidspunkt }}{% endif %}
+                {% else %}
+                Ingen arrangement
+            {% endfor %}
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+{% with %}
+{% set totals = {'totalt_inntekt': omsokt_belop, 'totalt_utgift': 0 } %}
+<h1>Budsjett</h1>
+<table>
+    <thead>
+    <tr>
+        <th width="20%"></th>
+        <th width="30%"></th>
+        <th width="50%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td colspan="2">
+            <table>
+                <thead>
+                <tr>
+                    <th align="left" width="60%">Utgifter</th>
+                    <th align="right" width="35%">Beløp</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for utgiftspost in okonomipost if utgiftspost.okonomipost_type == 'Utgift' %}
+                    {% for utgift in utgiftspost.okonomibelop if utgift.okonomibelop_type == 'Budsjett' %}
+                        {% if totals.update({'totalt_utgift': totals['totalt_utgift'] + utgift.belop }) %}{% endif %}
+                        <tr>
+                            <td>{{ utgiftspost.navn }}</td>
+                            <td align="right">{{ utgift.belop }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr class="total">
+                    <td>Totalt</td>
+                    <td align="right">{{ totals['totalt_utgift'] }}</td>
+                </tr>
+                </tfoot>
+            </table>
+        </td>
+        <td>
+            <table>
+                <thead>
+                <tr>
+                    <th align="left" width="60%">Inntekter</th>
+                    <th align="right" width="35%">Beløp</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Denne søknaden</td>
+                    <td align="right">{{ omsokt_belop }}</td>
+                </tr>
+                {% for inntektspost in okonomipost if inntektspost.okonomipost_type == 'Inntekt' %}
+                    {% for inntekt in inntektspost.okonomibelop if inntekt.okonomibelop_type == 'Budsjett' %}
+                        {% if totals.update({'totalt_inntekt': totals['totalt_inntekt'] + inntekt.belop }) %}{% endif %}
+                        <tr>
+                            <td>{{ inntektspost.navn }}</td>
+                            <td align="right">{{ inntekt.belop }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr class="total">
+                    <td>Totalt</td>
+                    <td align="right">{{ totals['totalt_inntekt'] }}</td>
+                </tr>
+                </tfoot>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr style="padding-top: 3px;">
+        <td>Budsjettbalanse</td>
+        <td>{{ totals['totalt_inntekt'] - totals['totalt_utgift'] }}</td>
+        <td></td>
+    </tr>
+    </tfoot>
+</table>
+{% endwith %}
+
+<h1>Vedlegg</h1>
+<table>
+    <thead>
+    <tr>
+        <th width="20%"></th>
+        <th width="80%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Opplastede filer</td>
+        <td>
+            {% for item in vedlegg %}
+                {% if not loop.first %}<br>{% endif %}
+                {{ item.filnavn }}: {{ item.beskrivelse }}
+                {% else %}
+                Ingen
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>Filer publisert andre steder</td>
+        <td>
+            {% for item in vedlagtlink %}
+                {% if not loop.first %}<br>{% endif %}
+                <a href="{{ item.navn|e }}">{{ item.navn|e }}</a>:
+                {{ item.beskrivelse }}
+                {% if item.passord %}
+                (brukernavn og passord: '{{ item.passord }}')
+                {% endif %}
+                {% else %}
+                Ingen
+            {% endfor %}
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h1>Annet</h1>
+<table>
+    <thead>
+    <tr>
+        <th width="20%"></th>
+        <th width="80%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Kommentar</td>
+        <td>{{ kommentar }}</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block css %}
+    {{ super() }}
+{% endblock %}
+
+{% block templates %}
+    {{ super() }}
+    {% include "tilskudd_layout_template.html" %}
+    {% include "actions/action_content_ny_organisasjon.html" %}
+    {% include "profil/content_organisasjoner.html" %}
+    {% include "profil/content_personalia.html" %}
+    {% include "profil/profil_view_title.html" %}
+
+{% endblock %}
+
+
+
+{% block js %}
+    {{ super() }}
+
+    {% assets "profil_js_libs" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    <script type="text/javascript">
+        (function (ns) {
+            "use strict";
+
+            var layout = new Tilskudd.TilskuddLayout();
+
+            var viewProfilTitleView = new Tilskudd.ViewProfilTitleView({});
+
+            var person = new Tilskudd.Person({'id': window.loggedInPerson.get('id') });
+            var organisationCollection = new Tilskudd.MinOrganisasjonCollection([], {person_id: person.id});
+            organisationCollection.fetch();
+
+
+            var actionMenuElements = new Tilskudd.MenuElementCollection([
+                {
+                    title: 'Finn eller registrer organisasjon',
+                    id: 'ny_organisasjon_action'
+                }
+            ]);
+
+            var actionMenuTitleToContentView = [
+                {
+                    itemId: 'ny_organisasjon_action',
+                    contentView: {newInstance: function (callback) {
+                        callback(new Tilskudd.OrganisasjonLayout(
+                                {
+                                    aktor_url: "{{ aktor_url }}"
+                                }));
+                    }
+                    }
+                }
+            ];
+
+            var SoknadEditActionMenuView = Tilskudd.ActionMenuView.extend({
+                childViewOptions: function (model, index) {
+                    return actionMenuTitleToContentView;
+                }
+            });
+
+
+            var actionMenuView = new SoknadEditActionMenuView({
+                contentRegion: layout.actionarea,
+                collection: actionMenuElements
+            });
+
+            // Setup left menu
+            //////////////////
+
+            var leftMenuElements = new Tilskudd.MenuElementCollection([
+                {"title": "Personalia", "id": "person"},
+                {"title": "Organisasjoner", "id": "organisasjon"}
+            ]);
+
+            var leftMenuTitleToContentView = [
+                {
+                    itemId: 'person',
+                    contentView: {newInstance: function (callback) {
+                        callback(new Tilskudd.PrersonaliaFormView(
+                                {
+                                    model: person
+                                }));
+                    }
+                    }
+                },
+                {
+                    itemId: 'organisasjon',
+                    contentView: {newInstance: function (callback) {
+                        callback(new Tilskudd.OrganisasjonFormView(
+                                {
+                                    model: new Tilskudd.OrganisasjonCollectionModel({'collection': organisationCollection}),
+                                    collection: organisationCollection,
+                                    aktor_url: "{{ aktor_url }}"
+                                }));
+                    }
+                    }
+                }
+            ];
+
+            var ProfilLeftMenuView = Tilskudd.LeftMenuView.extend({
+                childViewOptions: function (model, index) {
+                    return leftMenuTitleToContentView;
+                }
+            });
+
+            var leftMenuView = new ProfilLeftMenuView({
+                urlRedirectOnCancel: "/",
+                contentRegion: layout.content,
+                collection: leftMenuElements
+
+            });
+
+            Tilskudd.TilskuddApp.start({
+                pageContent: layout
+            });
+
+            person.fetch({
+                'success': function (model) {
+                    layout.menu.show(leftMenuView);
+                    layout.actionbar.show(actionMenuView);
+                    layout.title.show(viewProfilTitleView);
+                    Tilskudd.TilskuddApp.vent.trigger("tilskudd:ready");
+                }
+            });
+
+        }());
+    </script>
+
+{% endblock %}
+

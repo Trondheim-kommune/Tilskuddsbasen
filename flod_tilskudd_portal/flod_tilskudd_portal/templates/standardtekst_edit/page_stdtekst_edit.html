@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block css %}
+    {{ super() }}
+{% endblock %}
+
+{% block templates %}
+    {{ super() }}
+    {% include "tilskudd_layout_template_no_menu.html" %}
+    {% include "standardtekst_edit/content_standardtekst.html" %}
+    {% include "standardtekst_edit/standardtekst_edit_view_title.html" %}
+
+{% endblock %}
+
+
+{% block js %}
+    {{ super() }}
+
+    {% assets "standardtekst_edit_js_libs" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    <script type="text/javascript">
+        (function () {
+            "use strict";
+
+            var layout = new Tilskudd.TilskuddLayoutNoMenu();
+
+            var standardtekstModel = new Tilskudd.StandardTekstModel({'id':{{ id }}});
+
+            var viewStdTekstTitleView = new Tilskudd.RedigereStandardTekstTitleView({model: standardtekstModel});
+
+            // Setup left menu
+            //////////////////
+
+            var leftMenuElements = new Tilskudd.MenuElementCollection([
+                {"title": "Rediger", "id": "redigere_stdtekst"}
+            ]);
+
+            var leftMenuTitleToContentView = [
+                {
+                    itemId: 'redigere_stdtekst',
+                    contentView: {newInstance: function (callback) {
+                        callback(new Tilskudd.RedigereStandardTekstView(
+                                {
+                                    model: standardtekstModel
+                                }));
+                    }
+                    }
+                }
+            ];
+            var ProfilLeftMenuView = Tilskudd.LeftMenuView.extend({
+                childViewOptions: function (model, index) {
+                    return leftMenuTitleToContentView;
+                }
+            });
+
+            var leftMenuView = new ProfilLeftMenuView({
+                urlRedirectOnCancel: "/admin/?menu=Standardtekster",
+                contentRegion: layout.content,
+                collection: leftMenuElements
+
+            });
+
+            Tilskudd.TilskuddApp.start({
+                pageContent: layout
+            });
+
+            standardtekstModel.fetch({
+                'success': function (model) {
+                    layout.menu.show(leftMenuView);
+                    layout.title.show(viewStdTekstTitleView);
+                    Tilskudd.TilskuddApp.vent.trigger("tilskudd:ready");
+                }
+            });
+
+        }());
+    </script>
+
+{% endblock %}
+

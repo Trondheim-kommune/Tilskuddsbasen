@@ -1,0 +1,26 @@
+<script id="innledning_template" type="text/template">
+
+    <div class="well margin-top-general">
+        <h2>Innledning</h2>
+		<p class="preformatted"><span id="id_innledningstekst"></span></p>
+
+        <p>
+            <div>NB. Du må lese retningslinjene før du fyller ut søknadsskjemaet. </div>
+            <div class="control-group">
+                <small class="margin-right-general"><a id="id_lenke_til_retningslinjer" href="<%= lenke_til_retningslinjer %>" target="_blank" > </a></small>
+            </div>
+        <p />
+
+		<div>Søknadsfrist: <span id="id_soknadsfrist"></span></div>
+
+        <div class="control-group">
+            <small class="margin-right-general">Skjemaet mellomlagres når du trykker på forrige eller neste.
+            </small>
+            <button type="button" id="cancel_button" class="btn btn-default">Avbryt</button>
+		  <div class="pull-right">
+		   	<button type="button" id="next_button" name="next-button" class="btn btn-primary">Neste <i class="glyphicon glyphicon-chevron-right"></i></button>
+		  </div>
+		</div>
+    </div>
+
+</script>

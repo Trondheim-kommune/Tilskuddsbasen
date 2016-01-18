@@ -1,0 +1,30 @@
+<script id="annet_template" type="text/template">
+
+    <div class="well margin-top-general">
+
+        <h2>Annet</h2>
+
+        <p>Er det noe du vil tilføye eller kommentere?</p>
+        <label for="id_kommentar">Kommentar</label>
+
+        <div class="pull-right-desktop-only">Maks 700 tegn</div>
+        <textarea class="form-control" id="id_kommentar" name="kommentar" rows="7" cols="50" maxlength="700"></textarea>
+
+        <div class="margin-top-general control-group">
+            <small>Du vil få se en oversikt over din søknad,derfra kan du velge å sende den.</small>
+            <div class="margin-top-general">
+                <small class="margin-right-general">Skjemaet mellomlagres når du trykker på forrige eller neste.
+                </small>
+                <button type="button" id="previous_button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i>
+                    Forrige
+                </button>
+                <button type="button" id="cancel_button" class="btn btn-default">Avbryt</button>
+                <button type="button" id="save_button" class="btn btn-default">Lagre</button>
+                <div class="controls pull-right">
+                    <button type="button" id="next_button" class="btn btn-primary">Neste <i
+                            class="glyphicon glyphicon-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

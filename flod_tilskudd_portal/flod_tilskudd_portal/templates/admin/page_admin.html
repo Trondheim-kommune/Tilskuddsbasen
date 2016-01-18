@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block css %}
+    {{ super() }}
+{% endblock %}
+
+{% block templates %}
+    {{ super() }}
+    {% include "tilskudd_layout_template.html" %}
+    {% include "admin/content_tilskuddsordninger.html" %}
+    {% include "admin/admin_view_title.html" %}
+    {% include "admin/content_standardtekster.html" %}
+    {% include "actions/action_content_ny_tilskuddsordning.html" %}
+    {% include "actions/action_content_ny_stdtekst.html" %}
+
+{% endblock %}
+
+
+{% block js %}
+    {{ super() }}
+
+    {% assets "admin_js_libs" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    <script type="text/javascript">
+        (function (ns) {
+            "use strict";
+
+            var layout = new ns.TilskuddLayout();
+
+            var tilskuddsordninger = new ns.TilskuddsordningCollection();
+            var tilskuddModel = new ns.TilskuddsordningModel();
+
+            var stdTekstCollection = new ns.StandardTekstCollection();
+            stdTekstCollection.fetch();
+
+            var viewTilskuddordTitleView = new ns.ViewAdminTitleView({model: tilskuddModel});
+
+            var actionMenuElements = new ns.MenuElementCollection([
+                {
+                    title: 'Ny tilskuddsordning',
+                    id: 'ny_tilskuddsordning_action'
+                },
+                {
+                    title: 'Ny standardtekst',
+                    id: 'ny_standardtekst_action'
+                }
+            ]);
+
+            var actionMenuTitleToContentView = [
+                {
+                    itemId: 'ny_tilskuddsordning_action',
+                    contentView: {newInstance: function (callback) {
+                        callback(new ns.NySoknadslisteActionView(
+                                {
+                                    model: tilskuddModel
+                                }));
+
+                    }
+                    }
+                },
+                {
+                    itemId: 'ny_standardtekst_action',
+                    contentView: {newInstance: function (callback) {
+                        callback(new ns.NyStdTekstActionView(
+                                {
+                                    model: new ns.StandardTekstModel()
+                                }));
+                    }
+                    }
+                }
+            ];
+
+            var AdminEditActionMenuView = ns.ActionMenuView.extend({
+                childViewOptions: function (model, index) {
+                    return actionMenuTitleToContentView;
+                }
+            });
+
+            var actionMenuView = new AdminEditActionMenuView({
+                contentRegion: layout.actionarea,
+                collection: actionMenuElements
+            });
+
+            // Setup left menu
+            //////////////////
+
+            var leftMenuElements = new ns.MenuElementCollection([
+                {"title": "Tilskuddsordninger", "id": "tilskuddsordninger"},
+                {"title": "Standardtekster", "id": "stdtekster"}
+            ]);
+
+            var leftMenuTitleToContentView = [
+                {
+                    itemId: 'tilskuddsordninger',
+                    contentView: {newInstance: function (callback) {
+                        callback(new ns.TilskuddsordningerListView(
+                                {
+                                    model: new ns.TilskuddsordningModel(),
+                                    collection: tilskuddsordninger
+                                }));
+                    }
+                    }
+                },
+                {
+                    itemId: 'stdtekster',
+                    contentView: {newInstance: function (callback) {
+                        callback(new ns.StandardTekstListView(
+                                {
+                                    model: new ns.StandardTekstModel(),
+                                    collection: stdTekstCollection
+                                }));
+                    }
+                    }
+                }
+            ];
+            var ProfilLeftMenuView = ns.LeftMenuView.extend({
+                childViewOptions: function (model, index) {
+                    return leftMenuTitleToContentView;
+                }
+            });
+
+            var leftMenuView = new ProfilLeftMenuView({
+                urlRedirectOnCancel: "/",
+                contentRegion: layout.content,
+                collection: leftMenuElements
+
+            });
+
+            Tilskudd.TilskuddApp.start({
+                pageContent: layout
+            });
+
+            tilskuddsordninger.fetch({
+                'success': function () {
+                    layout.menu.show(leftMenuView);
+                    layout.actionbar.show(actionMenuView);
+                    layout.title.show(viewTilskuddordTitleView);
+                    Tilskudd.TilskuddApp.vent.trigger("tilskudd:ready");
+                }
+            });
+
+        }(Tilskudd));
+    </script>
+
+{% endblock %}
+

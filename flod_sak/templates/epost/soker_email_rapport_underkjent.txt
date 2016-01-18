@@ -1,0 +1,14 @@
+Hei,
+
+Trondheim kommune har underkjent rapporten din. Kommentar fra saksbehandler er:
+
+"
+{{saksbehandler_kommentar}}
+"
+
+For å se status på din søknad kan du logge inn her: https://tilskudd.trondheim.kommune.no/soknad/{{ soknad_id }}
+
+Dette er en automatisk generert e-post som ikke kan besvares.
+
+Med vennlig hilsen
+Trondheim kommune

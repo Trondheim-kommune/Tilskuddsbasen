@@ -1,0 +1,48 @@
+<script id="personalia_template" type="text/template">
+    <div class="well clearfix">
+	    <!--<div class="col-md-3 pull-right margin-bottom-general">
+	        <div class="person-info-box">
+	            <span class="glyphicon glyphicon-info-sign"></span>
+	            <span>Fødselsnummer er hentet fra id-porten. Resten redigerer du selv her</span>
+	        </div>
+	    </div> -->
+	   
+        <h2>Personalia</h2>
+        <form>
+        	<div class="row">
+	        	<div class="person-info-box pull-right-desktop-only col-md-3">
+	            	<span class="glyphicon glyphicon-info-sign"></span>
+	            	<span>Fødselsnummer er hentet fra id-porten. Resten redigerer du selv her</span>
+	        	</div>
+	            <div class="col-md-4">
+	            	<div class="form-group margin-top-small-medium-down"><b>Fødselsnummer: </b>
+						<div id="id_fodselsnummer"></div>
+	            	</div>
+	            	<div class="form-group">
+		                <label for="id_first_name">Fornavn:</label>
+		                <input id="id_first_name" type="text" placeholder="Fornavn" class="form-control">
+		            </div>
+		
+		            <div class="form-group">
+		                <label for="id_last_name">Etternavn:</label>
+		                <input id="id_last_name" type="text" placeholder="Etternavn" class="form-control">
+		            </div>
+		
+		            <div class="form-group">
+		                <label for="id_email_address">E-post:</label>
+		                <input id="id_email_address" name="email_address" type="text" placeholder="Email" class="form-control">
+		            </div>
+		
+		            <div class="form-group">
+		                <label for="id_phone_number">Telefon:</label>
+		                <input id="id_phone_number" name="phone_number" type="text" placeholder="Telefon" class="form-control">
+		            </div>
+		            <div>
+		                <button type="button" id="savePersonInfo" name="savePersonInfo" class="btn btn-primary">Lagre</button>
+		            </div>	
+	            </div>
+           </div>
+            
+        </form>
+    </div>
+</script>

@@ -1,0 +1,11 @@
+Hei,
+
+
+Du har mottatt en rapport. Logg inn i Tilskuddsbasen for å behandle rapporten.
+
+Logg inn her https://tilskudd.trondheim.kommune.no/soknad/{{ soknad_id }}/rapport/{{ rapport_id }}
+
+Dette er en automatisk generert e-post som ikke kan besvares.
+
+Med vennlig hilsen
+Trondheim kommune

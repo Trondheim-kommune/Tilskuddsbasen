@@ -1,0 +1,43 @@
+<script id="arrangement_template" type="text/template">
+
+    <div class="row form-group">
+        <input type="hidden" name="arrangement_id" value="<%- (typeof id !== 'undefined') ? id : '' %>">
+        <div class="col-md-3">
+            <input title="Sted" id="id_sted" class="form-control" name="sted" type="text" placeholder="Hvor">
+        </div>
+        <div class="col-md-3">
+            <div class="date-decided form-group margin-top-general-medium-down">
+                <label for="id_dato_bestemt">
+                    Dato er bestemt
+                </label>
+                <input type="checkbox" id="id_dato_bestemt" class="dato_bestemt_checkbox" checked="checked">
+            </div>
+        </div>
+
+        <div class="dato_div">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <input id="id_start_dato" name="start_dato" title="Startdato" class="datepicker form-control" type="text" placeholder="Startdato" data-date-format="dd.mm.yyyy">
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <input id="id_slutt_dato" name="slutt_dato" title="Sluttdato" class="datepicker form-control" type="text" placeholder="Sluttdato" data-date-format="dd.mm.yyyy">
+                </div>
+            </div>
+        </div>
+        <div class="tidspunkt_div">
+            <div class="col-md-4 form-group">
+                <input title="Periode" type="text" id="id_tidspunkt" name="tidspunkt" class="form-control" placeholder="Periode">
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="wrapper pull-right-desktop-only">
+                <button type="button" class="btn btn-default remove_arrangement">Fjern</button>
+            </div>
+        </div>
+    </div>
+
+</script>

@@ -1,0 +1,65 @@
+<script id="klage_action_template" type="text/template">
+    <form method="post">
+        <div class="padding-general margin-top-general well">
+            <h2>Klagebehandling</h2>
+
+            <div class="form-group">
+                <p>
+                    Du kan klage på dette vedtaket. Klagen blir sendt til enheten som fattet vedtaket. Dersom enheten opprettholder vedtaket,
+                    utarbeider enheten en sak som legges fram for formannskapet.
+                </p>
+                <p>
+                    Klagefristen er 3 uker.
+                </p>
+                <p>
+                    Vi oppfordrer deg til å ta kontakt med saksbehandler før du eventuelt sender en klage. Saksbehandler vil kunne gi deg mer
+                    bakgrunnsinformasjon for vedtaket. Du har også rett til å be om en nærmere begrunnelse for vedtaket, og ved behov har du
+                    rett til å be om hjelp til å sette opp en eventuell klage.
+                </p>
+                <p>
+                    Vi gjør oppmerksom på følgende:
+                </p>
+                <ul class="bullet-list">
+                    <li>
+                        Trondheim kommune mottar årlig søknader for vesentlig større beløp enn det finnes budsjett for. Vi må derfor prioritere
+                        strengt i vår vurdering av søknadene.
+                    </li>
+                    <li>
+                        Dersom et eller flere av vilkårene i retningslinjene ikke er oppfylt, vil en klage sannsynligvis bli avvist av formannskapet.
+                    </li>
+                </ul>
+                <p><a id="id_email">Ta kontakt med saksbehandler</a></p>
+            </div>
+
+            <div class="form-group">
+                <span class="labeling">Klagefrist: </span>
+                <span id="id_klagefrist"></span>
+            </div>
+
+
+            <div class="form-group">
+                <div class="pull-right">Maks 300 tegn</div>
+                <label class="labeling pull-left-desktop-only">
+                    Skriv begrunnelse for klage:
+                </label>
+                <textarea class="form-control" id="id_begrunnelse_klage" name="begrunnelse_klage" rows="7" cols="50"
+                          maxlength="300"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="margin-left-general checkbox" for="id_bekreft">
+                    <input type="checkbox" id="id_bekreft"/>Jeg bekrefter herved at jeg sender inn en formell klage
+                    på vedtaket
+                </label>
+            </div>
+
+            <div class="clearfix">
+                <div class="control-group margin-top-general pull-right-desktop-only">
+                    <button type="button" id="cancel_action" class="btn btn-default">Avbryt</button>
+                    <button type="button" id="ok_action" class="btn btn-danger" value="disable" disabled>Send klage</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</script>

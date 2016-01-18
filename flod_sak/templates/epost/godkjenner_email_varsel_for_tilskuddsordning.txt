@@ -1,0 +1,13 @@
+Hei,
+
+
+Dette er en påminnelse fra {{ saksbehandler }} om at du har søknader til godkjenning på tilskuddsordningen "{{ tilskuddsordning_navn }}".
+
+Logg inn her https://tilskudd.trondheim.kommune.no/soknader/?filter={{ filter }}
+
+
+
+Dette er en automatisk generert e-post som ikke kan besvares.
+
+Med vennlig hilsen
+Trondheim kommune

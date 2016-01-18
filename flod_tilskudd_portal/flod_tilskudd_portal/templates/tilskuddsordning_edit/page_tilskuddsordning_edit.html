@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block css %}
+    {{ super() }}
+{% endblock %}
+
+{% block templates %}
+    {{ super() }}
+    {% include "tilskudd_layout_template.html" %}
+    {% include "tilskuddsordning_edit/tilskuddsordning_edit_view_title.html" %}
+    {% include "tilskuddsordning_edit/content_om_tilskuddsordning.html" %}
+    {% include "tilskuddsordning_edit/content_saksbehandlere.html" %}
+
+{% endblock %}
+
+
+{% block js %}
+    {{ super() }}
+
+    {% assets "tilskuddsordning_edit_js_libs" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    <script type="text/javascript">
+        (function (ns) {
+            "use strict";
+
+            var layout = new ns.TilskuddLayout();
+
+            var tilskuddsordningModel = new ns.TilskuddsordningModel({'id':{{ id }}});
+
+            var viewTilskuddordTitleView = new ns.RedigereTilskuddordTitleView({model: tilskuddsordningModel});
+
+            // Setup left menu
+            //////////////////
+
+            var leftMenuElements = new ns.MenuElementCollection([
+                {"title": "Tilskuddsordning", "id": "tilskuddsordning"},
+                {"title": "Saksbehandlere", "id": "saksbehandlere"}
+            ]);
+
+            var leftMenuTitleToContentView = [
+                {
+                    itemId: 'tilskuddsordning',
+                    contentView: {newInstance: function (callback) {
+                        tilskuddsordningModel.fetch({
+                            'success': function () {
+                                callback(new ns.TilskuddsordningView(
+                                        {
+                                            model: tilskuddsordningModel
+                                        }));
+                            }
+                        });
+                    }
+                    }
+                },
+                {
+                    itemId: 'saksbehandlere',
+                    contentView: {newInstance: function (callback) {
+                        tilskuddsordningModel.fetch({
+                            'success': function () {
+                                callback(new ns.TilskuddsordnSaksbehandlereView(
+                                        {
+                                            model: tilskuddsordningModel,
+                                            collection: tilskuddsordningModel.saksbehandlereInfo
+                                        }));
+                            }
+                        });
+                    }
+                    }
+                }
+            ];
+
+            var ProfilLeftMenuView = ns.LeftMenuView.extend({
+                childViewOptions: function (model, index) {
+                    return leftMenuTitleToContentView;
+                }
+            });
+
+            var leftMenuView = new ProfilLeftMenuView({
+                urlRedirectOnCancel: "/admin/?menu=Tilskuddsordninger",
+                contentRegion: layout.content,
+                collection: leftMenuElements
+
+            });
+
+            ns.TilskuddApp.start({
+                pageContent: layout
+            });
+
+            tilskuddsordningModel.fetch({
+                'success': function (model) {
+                    layout.menu.show(leftMenuView);
+                    layout.title.show(viewTilskuddordTitleView);
+                    ns.TilskuddApp.vent.trigger("tilskudd:ready");
+                }
+            });
+
+        }(Tilskudd));
+    </script>
+
+{% endblock %}
+

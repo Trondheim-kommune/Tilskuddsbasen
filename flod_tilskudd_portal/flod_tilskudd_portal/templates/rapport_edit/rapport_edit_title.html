@@ -1,0 +1,17 @@
+<script id="edit_rapport_title_template" type="text/template">
+    <div id="edit_rapport_title" class="soknad_title">
+        <div id="main_header">
+            <h1><span>Rapport for</span>
+                <span><%- (_.isEmpty(prosjektnavn)?"<Mangler prosjektnavn>":prosjektnavn) %>, </span>
+                <span id="id_soker_name"></span>
+                <span>- <%- id %></span>
+            </h1>
+            <h1> </h1>
+        </div>
+        <div id="sub_header">
+        </div>
+        <div id="sub_sub_header">
+            <div class="application-status">Status: <%- status %></div>
+        </div>
+    </div>
+</script>

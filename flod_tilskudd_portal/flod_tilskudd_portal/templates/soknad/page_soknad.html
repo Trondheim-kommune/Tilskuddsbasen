@@ -1,0 +1,636 @@
+{% extends "base.html" %}
+
+{% block css %}
+    {{ super() }}
+{% endblock %}
+
+{% block templates %}
+    {{ super() }}
+
+    {% include "tilskudd_layout_template.html" %}
+    {% include "common/action_content.html" %}
+    {% include "common/menu_content.html" %}
+    {% include "actions/action_content_slett_soknad.html" %}
+    {% include "actions/action_content_send_inn_soknad.html" %}
+    {% include "actions/action_content_trekk_soknad.html" %}
+    {% include "actions/action_content_rediger_soknad.html" %}
+    {% include "actions/action_content_behandle.html" %}
+    {% include "actions/action_content_send_tilbake_til_saksbehandling.html" %}
+    {% include "actions/action_content_til_vedtak.html" %}
+    {% include "actions/action_content_etterspor_info.html" %}
+    {% include "actions/action_content_lever_rapport.html" %}
+    {% include "actions/action_content_til_utbetaling.html" %}
+    {% include "actions/action_content_ny_rapport.html" %}
+    {% include "actions/action_content_godkjenn_rapport.html" %}
+    {% include "actions/action_content_til_vedtak.html" %}
+    {% include "actions/action_content_krav_om_tilbakebetaling.html" %}
+    {% include "actions/action_content_redigere_rapportfrist.html" %}
+    {% include "actions/action_content_registrer_utbetaling.html" %}
+    {% include "actions/action_content_underkjenn_rapport.html" %}
+    {% include "actions/action_content_avskriv_rapportkrav.html" %}
+    {% include "actions/action_content_fatt_vedtak.html" %}
+    {% include "actions/action_content_rediger_rapport.html" %}
+    {% include "actions/action_content_klage.html" %}
+    {% include "actions/action_content_godta_vedtak.html" %}
+    {% include "actions/action_content_takke_nei.html" %}
+    {% include "actions/action_content_vurdere_klage.html" %}
+    {% include "actions/action_content_fatt_klagevedtak.html" %}
+    {% include "actions/action_content_ny_saksvedlegg.html" %}
+    {% include "actions/action_content_endre_kontakt.html" %}
+    {% include "actions/action_content_endre_tilskuddsordning.html" %}
+    {% include "soknad/content_utbetaling.html" %}
+    {% include "soknad/content_rapport.html" %}
+    {% include "soknad/content_oversikt.html" %}
+    {% include "soknad/content_soknad.html" %}
+    {% include "soknad/content_vedtak.html" %}
+    {% include "soknad/content_saksvedlegg.html" %}
+    {% include "soknad/soknad_view_title.html" %}
+
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+
+    {% assets "soknad_js_libs" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    <script type="text/javascript">
+
+        (function (ns) {
+            "use strict";
+
+
+            // layout and start
+            /////////////////////
+
+            var layout = new ns.TilskuddLayout();
+
+            var soknadModel = new ns.SoknadModel({'id':{{ id }}});
+            var soknadModelPromise = soknadModel.fetch();
+
+            // user_mode kan brukes for å avgjøre om brukeren er søker, sakbehandler eller godkjenner
+            var user_mode = "{{ user_mode }}";
+
+            var viewSoknadTitleView = new ns.ViewSoknadTitleView({model: soknadModel});
+
+            // Setup actions
+            //////////////////
+
+            var actionsMenuElements = new ns.SoknadActionCollection([], {'soknad_id': {{id}}});
+            var actionsMenuElementsPromise = actionsMenuElements.fetch();
+
+            var actionMenuTitleToContentView = [
+                        {
+                            itemId: 'opprett_rapport',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.NyRapportActionView(
+                                            {
+                                                model: new ns.SoknadRapportModel({'soknad_id': soknadModel.id})
+                                            }
+                                    ));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'rediger',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.RedigerSoknadActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'rediger', 'soknad_id': soknadModel.id})
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'sendinn',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.SendInnSoknadActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'sendinn', 'soknad_id': soknadModel.id})
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'slett',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.SlettSoknadActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'slett', 'soknad_id': soknadModel.id})
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'trekk',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.TrekkSoknadActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'trekk', 'trukket_kommentar': '', 'soknad_id': soknadModel.id})
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'behandle',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.BehandleActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'behandle', 'soknad_id': soknadModel.id}),
+                                                tilskuddsordningModel: new ns.TilskuddsordningModel({'id': soknadModel.get('tilskuddsordning').id})
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'endre_saksbehandler',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.BehandleActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'endre_saksbehandler', 'soknad_id': soknadModel.id}),
+                                                tilskuddsordningModel: new ns.TilskuddsordningModel({'id': soknadModel.get('tilskuddsordning').id})
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'endre_tilskuddsordning',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.EndreTilskuddsordningActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({
+                                                    'id': 'endre_tilskuddsordning',
+                                                    'soknad_id': soknadModel.id,
+                                                    'tilskuddsordning_id': soknadModel.get('tilskuddsordning').id
+                                                }),
+                                                tilskuddsordninger: new ns.TilskuddsordningCollection(),
+                                                saksbehandlere: new ns.SaksbehandlerCollection()
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'send_tilbake_til_saksbehandling',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.GeneralActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({
+                                                    'id': 'send_tilbake_til_saksbehandling', 'soknad_id': soknadModel.id,
+                                                    template: "#send_tilbake_til_saksbehandling_action_template"
+                                                })
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'til_vedtak',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.TilVedtakActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'til_vedtak', 'soknad_id': soknadModel.id}),
+                                                soknadModel: soknadModel
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'apne_soknad_for_redigering',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.ApneSoknadForRedigeringActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'apne_soknad_for_redigering', 'soknad_id': soknadModel.id}),
+                                                soknadModel: soknadModel
+                                            }));
+                                }
+                            }
+                        },
+
+                        {
+                            itemId: 'godkjenn_rapport',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.GeneralActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({
+                                                    'id': 'godkjenn_rapport', 'soknad_id': soknadModel.id,
+                                                    template: "#godkjenn_rapport_action_template"
+                                                })
+                                            }));
+                                }
+                            }
+                        },
+
+                        {
+                            itemId: 'redigere_rapportfrist',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.RedigereRapportfristActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'redigere_rapportfrist', 'soknad_id': soknadModel.id}),
+                                                soknadModel: soknadModel
+                                            }));
+                                }
+                            }
+                        },
+
+                        {
+                            itemId: 'registrer_utbetaling',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.RegistrerUtbetalingActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'registrer_utbetaling', 'soknad_id': soknadModel.id}),
+                                                soknadModel: soknadModel
+                                            }));
+                                }
+                            }
+                        },
+
+                        {
+                            itemId: 'til_utbetaling',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.GeneralActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({
+                                                    'id': 'til_utbetaling', 'soknad_id': soknadModel.id,
+                                                    template: "#til_utbetaling_action_template"
+                                                })
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'krev_tilbakebetaling',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.GeneralActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({
+                                                    'id': 'krev_tilbakebetaling', 'soknad_id': soknadModel.id,
+                                                    template: "#krav_om_tilbakebetaling_action_template"
+                                                })
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'underkjenn_rapport',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.UnderkjennRapportActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({
+                                                    'id': 'underkjenn_rapport', 'soknad_id': soknadModel.id
+                                                })
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'avskriv_rapportkrav',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.AvskrivRapportkravActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({
+                                                    'id': 'avskriv_rapportkrav', 'soknad_id': soknadModel.id
+                                                })
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'fatt_vedtak',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.VurdereVedtakActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'fatt_vedtak', 'soknad_id': soknadModel.id}),
+                                                soknadModel: soknadModel
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'opprett_rapport',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.NyRapportActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({
+                                                    'id': 'opprett_rapport', 'soknad_id': soknadModel.id
+                                                })
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'rediger_rapport',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.RedigerRapportActionView(
+                                            {
+                                                model: soknadModel
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'lever_rapport',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.LeverRapportActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'lever_rapport', 'soknad_id': soknadModel.id})
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'klage',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    soknadModel.fetch({
+                                        'success': function () {
+                                            callback(new ns.KlageActionView(
+                                                    {
+                                                        model: new ns.SoknadActionModel({'id': 'klage', 'soknad_id': soknadModel.id}),
+                                                        soknadModel: soknadModel
+                                                    }));
+                                        }
+                                    })
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'oppretthold_klage',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    soknadModel.fetch({
+                                        'success': function () {
+                                            callback(new ns.KlageActionView(
+                                                    {
+                                                        model: new ns.SoknadActionModel({'id': 'oppretthold_klage', 'soknad_id': soknadModel.id}),
+                                                        soknadModel: soknadModel
+                                                    }));
+                                        }
+                                    })
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'takke_nei',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    soknadModel.fetch({
+                                        'success': function () {
+                                            callback(new ns.TakkeNeiActionView(
+                                                    {
+                                                        model: new ns.SoknadActionModel({'id': 'takke_nei', 'soknad_id': soknadModel.id}),
+                                                        soknadModel: soknadModel
+                                                    }));
+                                        }
+                                    })
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'godta_vedtak',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    soknadModel.fetch({
+                                        'success': function () {
+                                            callback(new ns.GodtaVedtakActionView(
+                                                    {
+                                                        model: new ns.SoknadActionModel({'id': 'godta_vedtak', 'soknad_id': soknadModel.id}),
+                                                        soknadModel: soknadModel
+                                                    }));
+                                        }
+                                    })
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'vurder_klage',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.VurderKlageActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'vurder_klage', 'soknad_id': soknadModel.id}),
+                                                soknadModel: soknadModel
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'fatt_klagevedtak',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.FattKlagevedtakActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'fatt_klagevedtak', 'soknad_id': soknadModel.id}),
+                                                soknadModel: soknadModel
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'endre_kontakt',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.EndreKontaktActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'endre_kontakt', 'soknad_id': soknadModel.id}),
+                                                soknadModel: soknadModel
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'last_opp_saksvedlegg',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.NySaksvedleggActionView(
+                                            {
+                                                model: soknadModel
+                                            }));
+                                }
+                            }
+                        }
+                    ]
+                    ;
+
+            var actionMenuView = new ns.ActionMenuView({
+                contentRegion: layout.actionarea,
+                collection: actionsMenuElements,
+                childViewOptions: function (model, index) {
+                    return actionMenuTitleToContentView;
+                }
+            });
+
+            // Setup left menu
+            //////////////////
+
+            var leftMenuElements = new ns.MenuElementCollection([
+                {"title": "Oversikt", "id": "oversikt"},
+                {"title": "Søknad", "id": "soknad"},
+                {"title": "Saksvedlegg", "id": "saksvedlegg"},
+                {"title": "Vedtak", "id": "vedtak"},
+                {"title": "Rapport", "id": "rapport"},
+                {"title": "Utbetaling", "id": "utbetaling"}
+            ]);
+            var leftMenuTitleToContentView = [
+                        {
+                            itemId: 'oversikt',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.OversiktView(
+                                            {
+                                                model: soknadModel
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'soknad',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.SoknadView(
+                                            {
+                                                model: soknadModel
+                                            }));
+
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'saksvedlegg',
+                            disabled: (user_mode !== "tilskudd_saksbehandler" && user_mode !== "tilskudd_godkjenner"),
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.SaksvedleggView(
+                                            {
+                                                model: soknadModel,
+                                                collection: new Backbone.Collection(soknadModel.get("saksvedlegg"))
+                                            }));
+
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'vedtak',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.VedtakView(
+                                            {
+                                                model: soknadModel
+                                            }));
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'rapport',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    var soknadRapportModel = null;
+                                    if (soknadModel.get('rapport').length == 0) {
+                                        soknadRapportModel = new ns.SoknadRapportModel({'id': undefined, 'soknad_id': soknadModel.get('id')});
+                                    } else {
+                                        soknadRapportModel = new ns.SoknadRapportModel({'id': soknadModel.get('rapport')[0].id, 'soknad_id': soknadModel.get('id')});
+                                    }
+                                    soknadRapportModel.fetch({
+                                        'success': function () {
+                                            callback(
+                                                    new ns.RapportView(
+                                                            {
+                                                                model: soknadRapportModel,
+                                                                soknadModel: soknadModel
+                                                            }
+                                                    ));
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'utbetaling',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.UtbetalingView(
+                                            {
+                                                model: soknadModel,
+                                                user_is_soker: ( user_mode === "tilskudd_soker" )
+                                            }));
+                                }
+                            }
+                        }
+                    ]
+                    ;
+
+            var SoknadLeftMenuView = ns.LeftMenuView.extend({
+                childViewOptions: function (model, index) {
+                    return leftMenuTitleToContentView;
+                },
+                toggleDefaultItemView: function () {
+                    var item = this.children.findByModel(this.collection.models[0]);
+                    if (soknadModel.get('status') === 'Vedtak fattet' && user_mode === 'tilskudd_soker') {
+                        item = leftMenuView.findItemViewInCollectionByModelTitle("Vedtak");
+                    }
+                    this.toggleItem(item, false);
+                }
+            });
+
+            var leftMenuView = new SoknadLeftMenuView({
+                urlRedirectOnCancel: "/",
+                contentRegion: layout.content,
+                collection: leftMenuElements
+            });
+
+            var controller = {
+                leftMenuView: leftMenuView,
+                actionMenuView: actionMenuView,
+
+                parseRouteParameters: function (parameters) {
+                    console.log("parameters: " + parameters);
+                }
+            };
+
+            var soknaderRouter = new Marionette.AppRouter({
+                controller: controller,
+                appRoutes: {
+                    "": "parseRouteParameters"
+                }
+            });
+
+            ns.TilskuddApp.start({
+                pageContent: layout
+            });
+
+            $.when(soknadModelPromise, actionsMenuElementsPromise).then(
+                    function () {
+                        layout.menu.show(leftMenuView);
+                        layout.title.show(viewSoknadTitleView);
+                        layout.actionbar.show(actionMenuView);
+                        ns.TilskuddApp.vent.trigger("tilskudd:ready");
+                    },
+                    function () {
+                        console.error("error loading");
+                    });
+
+        }(Tilskudd));
+    </script>
+{% endblock %}
+

@@ -1,0 +1,10 @@
+Hei,
+
+Trondheim kommune kan ikke se å ha motatt svar på vedtak for deres søknad.
+
+For å svare på vedtak kan du logge inn her: https://tilskudd.trondheim.kommune.no/soknad/{{ soknad_id }}
+
+Dette er en automatisk generert e-post som ikke kan besvares.
+
+Med vennlig hilsen
+Trondheim kommune

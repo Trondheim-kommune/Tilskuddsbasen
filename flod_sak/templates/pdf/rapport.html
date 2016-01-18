@@ -1,0 +1,199 @@
+<html>
+<head>
+    <style>
+        tr.total {
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            padding: 3px 0 1px 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Gjennomføring</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th width="20%"></th>
+        <th width="80%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Ble prosjektet eller aktiviteten gjennomført i henhold til søknaden?</td>
+        <td>{{ prosjekt_gjennomforing }}</td>
+    </tr>
+    <tr>
+        <td>Sted og tid</td>
+        <td>
+            {% for item in arrangement %}
+                {% if not loop.first %}<br>{% endif %}
+                {{ item.sted }}, {% if item.start_dato %}{{ item.start_dato|strftime }} til {{ item.slutt_dato|strftime }}{% else %}{{ item.tidspunkt }}{% endif %}
+                {% else %}
+                Ingen arrangement
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>Avvik i forhold til søknaden?</td>
+        <td>{{ prosjekt_avvik }}</td>
+    </tr>
+    </tbody>
+</table>
+
+{% with %}
+{% set local_vars = {'totalt_inntekt': soknad.omsokt_belop, 'totalt_utgift': 0, 'totalt_inntekt_regnskap': 0, 'totalt_utgift_regnskap': 0 } %}
+{#  todo vedtatt beløp! #}
+{% for item in soknad.vedtak|sort_vedtak %}
+    {% if loop.first %}
+        {% if local_vars.update({'vedtatt_belop': item.vedtatt_belop, 'totalt_inntekt_regnskap': item.vedtatt_belop }) %}{% endif %}
+    {% endif %}
+{% endfor %}
+
+<h1>Regnskap</h1>
+<table>
+    <thead>
+    <tr>
+        <th width="20%"></th>
+        <th width="30%"></th>
+        <th width="50%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td colspan="2">
+            <table>
+                <thead>
+                <tr>
+                    <th align="left" width="60%">Utgifter</th>
+                    <th align="right" width="15%">Budsjett</th>
+                    <th align="right" width="15%">Regnskap</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for utgiftspost in okonomipost if utgiftspost.okonomipost_type == 'Utgift' %}
+                    <tr>
+                        <td>{{ utgiftspost.navn }}</td>
+                    {% for utgift in utgiftspost.okonomibelop if utgift.okonomibelop_type == 'Budsjett' %}
+                            {% if local_vars.update({'totalt_utgift': local_vars['totalt_utgift'] + utgift.belop }) %}{% endif %}
+                                <td align="right">{{ utgift.belop }}</td>
+                    {% else %}
+                    <td>&nbsp;</td>
+                    {% endfor %}
+                        {% for utgift in utgiftspost.okonomibelop if utgift.okonomibelop_type == 'Regnskap' %}
+                                {% if local_vars.update({'totalt_utgift_regnskap': local_vars['totalt_utgift_regnskap'] + utgift.belop }) %}{% endif %}
+                                <td align="right">{{ utgift.belop }}</td>
+                        {% else %}
+                        <td>&nbsp;</td>
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr class="total">
+                    <td>Totalt</td>
+                    <td align="right">{{ local_vars['totalt_utgift'] }}</td>
+                    <td align="right">{{ local_vars['totalt_utgift_regnskap'] }}</td>
+                </tr>
+                </tfoot>
+            </table>
+        </td>
+        <td>
+            <table>
+                <thead>
+                <tr>
+                    <th align="left" width="60%">Inntekter</th>
+                    <th align="right" width="15%">Budsjett</th>
+                    <th align="right" width="15%">Regnskap</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Denne søknaden</td>
+                    <td align="right">{{ soknad.omsokt_belop }}</td>
+                    <td align="right">{{ local_vars['vedtatt_belop'] }}</td>
+                </tr>
+                {% for inntektspost in okonomipost if inntektspost.okonomipost_type == 'Inntekt' %}
+                    <tr>
+                        <td>{{ inntektspost.navn }}</td>
+                        {% for inntekt in inntektspost.okonomibelop if inntekt.okonomibelop_type == 'Budsjett' %}
+                            {% if local_vars.update({'totalt_inntekt': local_vars['totalt_inntekt'] + inntekt.belop }) %}{% endif %}
+                            <td align="right">{{ inntekt.belop }}</td>
+                            {% else %}
+                            <td>&nbsp;</td>
+                        {% endfor %}
+                        {% for inntekt in inntektspost.okonomibelop if inntekt.okonomibelop_type == 'Regnskap' %}
+                            {% if local_vars.update({'totalt_inntekt_regnskap': local_vars['totalt_inntekt_regnskap'] + inntekt.belop }) %}{% endif %}
+                            <td align="right">{{ inntekt.belop }}</td>
+                            {% else %}
+                            <td>&nbsp;</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr class="total">
+                    <td>Totalt</td>
+                    <td align="right">{{ local_vars['totalt_inntekt'] }}</td>
+                    <td align="right">{{ local_vars['totalt_inntekt_regnskap'] }}</td>
+                </tr>
+                </tfoot>
+            </table>
+        </td>
+    </tr>
+    <tr style="padding-top: 3px;">
+        <td>Regnskapsbalanse</td>
+        <td>{{ local_vars['totalt_inntekt_regnskap'] - local_vars['totalt_utgift_regnskap'] }}</td>
+        <td></td>
+    </tr>
+    </tbody>
+    <tr>
+        <td>Kommentar hvis avvik mellom busjett og regnskap</td>
+        <td colspan="2">{{ budsjett_avvik }}</td>
+    </tr>
+    <tr>
+
+        <td>Hva gjøres med over-/underskudd?</td>
+        <td colspan="2">{{ resultat_kommentar }}</td>
+    </tr>
+</table>
+{% endwith %}
+
+<h1>Vedlegg</h1>
+<table>
+    <thead>
+    <tr>
+        <th width="20%"></th>
+        <th width="80%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Opplastede filer</td>
+        <td>
+            {% for item in vedlegg %}
+                {% if not loop.first %}<br>{% endif %}
+                {{ item.filnavn }}: {{ item.beskrivelse }}
+                {% else %}
+                Ingen
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>Filer publisert andre steder</td>
+        <td>
+            {% for item in vedlagtlink %}
+                {% if not loop.first %}<br>{% endif %}
+                <a href="{{ item.navn|e }}">{{ item.navn|e }}</a>:
+                {{ item.beskrivelse }}
+                {% if item.passord %}
+                    (brukernavn og passord: '{{ item.passord }}')
+                {% endif %}
+                {% else %}
+                Ingen
+            {% endfor %}
+        </td>
+    </tr>
+    </tbody>
+</table>
+

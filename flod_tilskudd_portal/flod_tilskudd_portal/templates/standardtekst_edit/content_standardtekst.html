@@ -1,0 +1,25 @@
+<script id="redigere_stdtekst_template" type="text/template">
+    <div class="padding-general margin-top-general well">
+        <div class="form-group margin-top-small">
+            <label for="id_navn">Navn:</label>
+            <input type="text" id="id_navn" maxlength="60" class="form-control"/>
+        </div>
+        <div class="form-group margin-top-small">
+            <label for="id_type">Type:</label>
+            <select id="id_type" class="form-control"></select>
+        </div>
+        <div class="form-group margin-top-small">
+            <label for="id_tekst">Tekst:</label>
+            <div class="pull-right-desktop-only">Maks 1000 tegn</div>
+            <textarea class="form-control" id="id_tekst" name="standardtekst" maxlength="1000" rows="12"></textarea>
+        </div>
+
+        <div class="control-group">
+            <button type="button" id="cancel_button" class="btn btn-default">Avbryt</button>
+            <div class="pull-right">
+                <button type="button" id="delete_button" name="delete_button" class="btn btn-danger">Slett</button>
+                <button type="button" id="save_button" name="save_button" class="btn btn-primary">Lagre</button>
+            </div>
+        </div>
+    </div>
+</script>

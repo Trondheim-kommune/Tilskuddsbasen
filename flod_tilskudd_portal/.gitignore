@@ -1,0 +1,14 @@
+*.*~
+*.pyc
+*.sh
+*~
+.DS_Store
+.env
+.idea
+.shell-env
+.shell-env-test
+flod_tilskudd_portal/static/.webassets-cache
+flod_tilskudd_portal/static/gen
+nosetests.xml
+venv
+

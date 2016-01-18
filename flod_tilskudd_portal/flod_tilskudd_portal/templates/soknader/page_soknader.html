@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block css %}
+    {{ super() }}
+{% endblock %}
+
+{% block templates %}
+    {{ super() }}
+
+    {% include "tilskudd_layout_template_no_menu.html" %}
+    {% include "common/action_content.html" %}
+    {% include "actions/action_content_filter.html" %}
+    {% include "common/menu_content.html" %}
+    {% if mode == "soker" %}
+        {% include "soknader/content_soknader.html" %}
+    {% elif mode == "saksbehandler" or mode == "godkjenner" %}
+        {% include "soknader/content_saksbehandler_soknader.html" %}
+        {% include "actions/action_content_varsle_godkjenner.html" %}
+    {% endif %}
+    {% include "/actions/action_content_ny_soknad.html" %}
+
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+
+    {% assets "soknader_js_libs" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    {% if mode == "soker" %}
+        {% set view = 'SoknadTableView' %}
+        {% assets "soker_soknader_js_libs" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+    {% elif mode == "saksbehandler" or mode == "godkjenner" %}
+        {% set view = 'SaksbehandlerSoknadTableView' %}
+        {% assets "saksbehandler_soknader_js_libs" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+    {% endif %}
+
+    <script type="text/javascript">
+
+        (function (ns) {
+            "use strict";
+
+            // layout and start
+            /////////////////////
+
+            var layout = new ns.TilskuddLayoutNoMenu();
+
+            var mySoknader = new ns.SoknadsListeCollection();
+
+            // Setup actions
+            //////////////////
+
+            var actionsMenuElements = new ns.MenuElementCollection([
+                {
+                    title: 'Filter',
+                    id: 'filter_action'
+                }
+            ]);
+
+            var actionTitleToContentView = [
+                {
+                    itemId: 'filter_action',
+                    contentView: {
+                        newInstance: function (callback) {
+                            callback(new ns.FilterSoknaderActionView(
+                                    {
+                                        collection: new ns.FacetCollection()
+                                    }));
+                        }
+                    }
+                }
+            ];
+
+
+            {% if mode == "soker" %}
+                actionsMenuElements.add(
+                        {
+                            title: 'Ny søknad',
+                            id: 'ny_soknad_action'
+                        });
+
+                actionTitleToContentView.push(
+                        {
+                            itemId: 'ny_soknad_action',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.NySoknadActionView(
+                                            {
+                                                model: new Backbone.Model(
+                                                        {
+                                                            tilskuddsordninger: new ns.TilskuddsordningCollection()
+                                                        })
+                                            }));
+                                }
+                            }
+
+                        });
+            {% endif %}
+
+            {% if mode == "saksbehandler" %}
+                actionsMenuElements.add(
+                        {
+                            title: 'Varsle godkjenner',
+                            id: 'varsle_godkjenner_action'
+                        });
+
+                actionTitleToContentView.push(
+                        {
+                            itemId: 'varsle_godkjenner_action',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.VarsleGodkjennerActionView(
+                                            {
+                                                model: new Backbone.Model(
+                                                        {
+                                                            tilskuddsordninger: new ns.TilskuddsordningCollection()
+                                                        })
+                                            }));
+                                }
+                            }
+
+                        });
+            {% endif %}
+
+            var SoknaderAksjonView = ns.ActionMenuView.extend({
+                childViewOptions: function (model, index) {
+                    return actionTitleToContentView;
+                }
+            });
+
+            var actionMenuView = new SoknaderAksjonView({
+                contentRegion: layout.actionarea,
+                collection: actionsMenuElements
+            });
+
+            // Setup left menu
+            //////////////////
+
+            var leftMenuElements = new ns.MenuElementCollection([
+                {"id": "Søknader", "title": "Soknader"}
+            ]);
+            var leftMenuTitleToContentView = [
+                {
+                    itemId: 'Søknader',
+                    contentView: {
+                        newInstance: function (callback) {
+                            callback(new ns.{{ view }}(
+                                    {
+                                        model: new ns.SoknadCollectionModel({'collection': mySoknader}),
+                                        collection: mySoknader,
+                                        mode: '{{ mode }}'
+                                    }));
+                        }
+                    }
+                }
+            ];
+
+            var leftMenuView = new ns.LeftMenuView({
+                urlRedirectOnCancel: "/",
+                contentRegion: layout.content,
+                collection: leftMenuElements,
+                childViewOptions: function (model, index) {
+                    return leftMenuTitleToContentView;
+                }
+            });
+
+
+            ns.TilskuddApp.start({
+                pageContent: layout
+            });
+
+            // Show view in regions
+            ////////////////////////
+
+            layout.menu.show(leftMenuView);
+            layout.actionbar.show(actionMenuView);
+            ns.TilskuddApp.vent.trigger("tilskudd:ready");
+
+        }(Tilskudd));
+
+
+    </script>
+{% endblock %}
+

@@ -1,0 +1,66 @@
+<script type="text/template" id="tilskuddsordning_saksbehandlere_view_template">
+    <div class="padding-general margin-top-general well">
+        <h2>Personer knyttet til tilskuddsordningen</h2>
+
+        <p>Her kan du legge til godkjenner og saksbehandlere.</p>
+
+        <h2>Godkjenner</h2>
+
+        <div class="form-inline well">
+            <select class="form-control  input-sm" id="id_godkjenner">
+            </select>
+
+            <label class="inline godkjenner-title" for="id_tittel">Tittel:</label>
+            <input id="id_tittel" name="tittel" type="text" class="form-control inline input-sm">
+        </div>
+        <h2>Saksbehandlere</h2>
+
+
+        <div class="table-responsive well">
+            <table id="id_table_saksbehandlere" class="table odd-even-table ">
+                <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th class="pull-right">Fjern</th>
+                </tr>
+                </thead>
+                <tbody id="list_saksbehandlere">
+
+                </tbody>
+            </table>
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <div class="input-group">
+                        <select id="id_saksbehandler" class="form-control input-sm">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" type="button"
+                                class="input-sm btn btn-primary add-person-btn margin-top-general-mobile-only">Legg
+                            til
+                            saksbehandler
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="margin-top-general control-group">
+            <small class="margin-right-general">Skjemaet mellomlagres når du trykker på forrige eller neste.
+            </small>
+            <button type="button" id="previous_button" name="previous_button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> Forrige</button>
+            <button type="button" id="cancel_button" class="btn btn-default">Avbryt</button>
+            <button type="button" id="save_button" class="btn btn-default">Lagre</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="saksbehandler_tablerow_template">
+    <td>
+        <div id="id_navn"></div>
+    </td>
+    <td class="pull-right">
+        <button type="button" class="btn btn-default remove-btn remove-cross"><span class="glyphicon glyphicon-remove "></span>
+        </button>
+    </td>
+</script>

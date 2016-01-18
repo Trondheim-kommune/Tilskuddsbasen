@@ -1,0 +1,302 @@
+<form class="form-horizontal" role="form">
+<div class="summary-section">
+    <p class="summary-section-title">Denne søknaden</p>
+
+    <div class="form-group ">
+        <label for="id_id" class="col-sm-3 control-label">Saksnummer</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_id"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_tilskuddsordning_navn" class="col-sm-3 control-label">Tilskuddsordning</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_tilskuddsordning_navn"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_soknadsfrist" class="col-sm-3 control-label">Søknadsfrist</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_soknadsfrist"></p>
+        </div>
+    </div>
+    <div class="form-group rapportfrist_info">
+        <label for="id_rapportfrist" class="col-sm-3 control-label">Rapportfrist</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_rapportfrist"></p>
+        </div>
+    </div>
+</div>
+<div class="summary-section">
+    <p class="summary-section-title">Om søker</p>
+
+    <div class="form-group">
+        <label for="id_organisation_name" class="col-md-3 col-sm-12 control-label">Søker</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_organisation_name"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_organisation_org_number" class="col-md-3 control-label">Organisasjonsnummer</label>
+
+        <div class="col-md-9">
+            <p class="form-control-static" id="id_organisation_org_number"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_organisation_telefon" class="col-md-3 control-label">Organisasjonstelefon</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_organisation_telefon"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_organisation_epost" class="col-md-3 control-label">Organisasjons e-post</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_organisation_epost"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_kontonummer" class="col-md-3 col-sm-12 control-label">Bankkonto</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_kontonummer"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_person_name" class="col-md-3 control-label">Kontaktperson</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_person_name"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_person_telefon" class="col-md-3 col-sm-12 control-label">Telefon</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_telefon"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_person_email_address" class="col-md-3 col-sm-12 control-label">E-post</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_epost"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_person_email_address" class="col-md-3 control-label">Beskrivelse av organisasjon</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_org_beskrivelse"></p>
+        </div>
+    </div>
+</div>
+
+<div class="summary-section">
+    <p class="summary-section-title">Beskrivelse</p>
+
+    <div class="form-group">
+        <label for="id_prosjektnavn" class="col-md-3 control-label">Navn på prosjekt/aktivitet</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_prosjektnavn"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_om_oss" class="col-md-3 control-label">Hvem er vi (valgfritt)</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static disBlock" id="id_om_oss"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_beskrivelse" class="col-md-3 control-label">Hva skal tilskuddet brukes til?</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_beskrivelse"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_maalsetting" class="col-md-3 control-label">Hva vi ønsker å oppnå med prosjektet/aktiviteten</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_maalsetting"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <% if(arrangement.length>0) { %>
+        <label for="id_arrangement" class="col-md-3 col-sm-12 control-label no-padding-top">Sted og tid</label>
+
+        <div class="col-sm-9">
+            <ul id="id_arrangement">
+                <%_.each(arrangement, function(arrangementet) { %>
+                <li><%- arrangementet.sted %> <% if(arrangementet.tidspunkt) { %> <%- ", " + arrangementet.tidspunkt %> <% }
+                    else if(arrangementet.start_dato) { %> <%- ", " + Tilskudd.formatDato(arrangementet.start_dato) + " til " + Tilskudd.formatDato(arrangementet.slutt_dato) %> <%} %>
+                </li>
+                <%});%>
+            </ul>
+        </div>
+        <% } else { %>
+        <label for="id_arrangement" class="col-sm-3 control-label">Sted og tid</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static">Ingen arrangement</p>
+        </div>
+        <% } %>
+    </div>
+</div>
+
+<div class="summary-section">
+    <p class="summary-section-title">Budsjett</p>
+
+    <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-1 dotted-frame" id="id_budsjett">
+            <div class="col-sm-6 table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Utgifter</th>
+                        <th class="text-right">Beløp (Kr)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <%
+                    var utgifter = okonomipostCollection.filterOkonomipost("Utgift");
+                    _.each(utgifter, function(utgift) {
+                    %>
+                    <tr>
+                        <td><%- utgift.get("navn") %></td>
+                        <td class="text-right"><%- utgift.getBelopOfType('Budsjett') %></td>
+                    </tr>
+                    <%
+                    });
+                    %>
+                    </tbody>
+                    <tfoot>
+                    <tr class="total">
+                        <td>Totalt</td>
+                        <td class="text-right" id="id_sum_utgifter"></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col-sm-6 table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Inntekter</th>
+                        <th class="text-right">Beløp</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Denne søknaden</td>
+                        <td class="text-right"><%- omsokt_belop %></td>
+                    </tr>
+                    <%
+                    var inntekter = okonomipostCollection.filterOkonomipost("Inntekt");
+                    _.each(inntekter, function(inntekt) {
+                    %>
+                    <tr>
+                        <td><%- inntekt.get("navn") %></td>
+                        <td class="text-right"><%- inntekt.getBelopOfType('Budsjett') %></td>
+                    </tr>
+                    <%
+                    });
+                    %>
+                    </tbody>
+                    <tfoot>
+                    <tr class="total">
+                        <td>Totalt</td>
+                        <td class="text-right" id="id_sum_inntekter"></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_budsjettbalanse" class="col-sm-3 control-label">Budsjettbalanse</label>
+
+        <div class="col-sm-3">
+            <p class="form-control-static text-right" id="id_budsjettbalanse"></p>
+        </div>
+    </div>
+</div>
+
+<div class="summary-section">
+    <p class="summary-section-title">Vedlegg</p>
+
+    <div class="form-group">
+        <% if (vedlegg.length >0) { %>
+        <label for="id_vedlegg" class="col-sm-3 control-label no-padding-top">Opplastede filer</label>
+
+        <div class="col-sm-9" id="id_vedlegg">
+            <ul>
+                <%
+                _.each(vedlegg, function(vedlegget) {
+                %>
+                <li><a class="margin-right-small" href="/api/sak/v1/vedlegg/<%- vedlegget.id %>"><%-
+                    vedlegget.filnavn%></a>
+                    <% if(vedlegget.beskrivelse !== undefined && vedlegget.beskrivelse !== null && vedlegget.beskrivelse
+                    !== ""){ %>
+                    : <%-vedlegget.beskrivelse %>
+                    <% } %>
+                </li>
+                <%});%>
+            </ul>
+        </div>
+        <% } else { %>
+        <label for="id_vedlegg" class="col-sm-3 control-label">Opplastede filer</label>
+
+        <div class="col-sm-9" id="id_vedlegg">
+            <p class="form-control-static">Ingen</p>
+        </div>
+        <% } %>
+    </div>
+    <div class="form-group no-padding-top">
+        <% if (vedlagtlink.length >0) { %>
+        <label for="id_vedlagt_links" class="col-sm-3 control-label no-padding-top">Filer publisert andre steder</label>
+
+        <div class="col-sm-9" id="id_vedlagt_links">
+            <ul>
+                <% _.each(vedlagtlink, function(vedlagtlinken) { %>
+                <li>
+                    <a href="<%- vedlagtlinken.navn %>"><%- vedlagtlinken.navn%></a>:
+                    <%- vedlagtlinken.beskrivelse %>
+                    <% if(vedlagtlinken.passord !== undefined && vedlagtlinken.passord !== null && vedlagtlinken.passord
+                    !== ""){ %>
+                    (brukernavn og passord: '<%- vedlagtlinken.passord %>')
+                    <% } %>
+                </li>
+                <% });%>
+            </ul>
+        </div>
+        <% } else { %>
+        <label for="id_vedlagt_links" class="col-sm-3 control-label">Filer publisert andre steder</label>
+
+        <div class="col-sm-9" id="id_vedlagt_links">
+            <p class="form-control-static">Ingen</p>
+        </div>
+        <% } %>
+    </div>
+</div>
+<div class="summary-section">
+    <p class="summary-section-title">Annet</p>
+
+    <div class="form-group">
+        <label for="id_kommentar" class="col-sm-3 control-label">Kommentar</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static" id="id_kommentar"></p>
+        </div>
+    </div>
+</div>
+</form>

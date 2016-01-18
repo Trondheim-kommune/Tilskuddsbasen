@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block css %}
+    {{ super() }}
+{% endblock %}
+
+{% block templates %}
+    {{ super() }}
+
+    {% include "tilskudd_layout_template.html" %}
+    {% include "common/action_content.html" %}
+    {% include "common/menu_content.html" %}
+    {% include "common/content_edit_arrangement_row.html" %}
+    {% include "common/content_vedlegg.html" %}
+    {% include "actions/action_content_slett_soknad.html" %}
+    {% include "actions/action_content_send_inn_soknad.html" %}
+    {% include "actions/action_content_trekk_soknad.html" %}
+    {% include "actions/action_content_rediger_soknad.html" %}
+    {% include "actions/action_content_lever_rapport.html" %}
+
+    {% include "rapport_edit/content_edit_innledning.html" %}
+    {% include "rapport_edit/content_edit_sammendrag.html" %}
+    {% include "rapport_edit/content_edit_gjennomforing.html" %}
+    {% include "rapport_edit/content_edit_regnskap.html" %}
+    {% include "rapport_edit/content_edit_view_soknaden.html" %}
+    {% include "rapport_edit/rapport_edit_title.html" %}
+
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+
+    {% assets "rapport_edit_js_libs" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    <script type="text/javascript">
+
+        (function (ns) {
+            "use strict";
+
+            // layout and start
+            /////////////////////
+
+            var layout = new ns.TilskuddLayout();
+
+            var soknadRapportModel = new ns.SoknadRapportModel({'id':{{ id }}, 'soknad_id':{{soknad_id}}});
+            var soknadRapportModelPromise = soknadRapportModel.fetch();
+
+            var soknadModel = new ns.SoknadModel({'id': soknadRapportModel.get('soknad_id')});
+            var soknadModelPromise = soknadModel.fetch();
+
+            var editRapportTitleView = new ns.EditRapportTitleView({model: soknadModel});
+
+            // Setup actions
+            //////////////////
+
+            var actionMenuElements = new ns.SoknadActionCollection([], {'soknad_id': {{soknad_id}}});
+            var actionMenuElementsPromise = actionMenuElements.fetch();
+
+            var actionMenuTitleToContentView = [
+                        {
+                            itemId: 'lever_rapport',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    callback(new ns.LeverRapportActionView(
+                                            {
+                                                model: new ns.SoknadActionModel({'id': 'lever_rapport', 'soknad_id': soknadModel.id})
+                                            }));
+                                }
+                            }
+                        }
+                    ]
+                    ;
+
+            var actionMenuView = new ns.ActionMenuView({
+                contentRegion: layout.actionarea,
+                collection: actionMenuElements,
+                childViewOptions: function (model, index) {
+                    return actionMenuTitleToContentView;
+                }
+            });
+
+            // Setup left menu
+            //////////////////
+
+            var leftMenuElements = new ns.MenuElementCollection([
+                {"title": "Innledning", "id": "innledning"},
+                {"title": "Søknaden", "id": "soknaden"},
+                {"title": "Gjennomføring", "id": "gjennomforing"},
+                {"title": "Regnskap", "id": "regnskap"},
+                {"title": "Vedlegg", "id": "vedlegg"},
+                {"title": "Sammendrag", "id": "sammendrag"}
+            ]);
+            var leftMenuTitleToContentView = [
+
+
+                        {
+                            itemId: 'innledning',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    soknadRapportModel.fetch({
+                                        'success': function () {
+                                            callback(new ns.RapportInnledningView(
+                                                    {
+                                                        model: soknadModel
+                                                    }));
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'soknaden',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    soknadRapportModel.fetch({
+                                        'success': function () {
+                                            callback(new ns.RapportSoknadenView(
+                                                    {
+                                                        model: soknadModel
+                                                    }));
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'gjennomforing',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    soknadRapportModel.fetch({
+                                        'success': function () {
+                                            callback(new ns.RapportGjennomforingView(
+                                                    {
+                                                        model: soknadRapportModel,
+                                                        collection: new Backbone.Collection(soknadRapportModel.get('arrangement'))
+                                                    }));
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'regnskap',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    soknadRapportModel.fetch({
+                                        'success': function () {
+                                            callback(new ns.RapportRegnskapView(
+                                                    {
+                                                        model: soknadRapportModel,
+                                                        collection: new ns.OkonomipostCollection(soknadRapportModel.get("okonomipost"))
+                                                    }));
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'vedlegg',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    soknadRapportModel.fetch({
+                                        'success': function () {
+                                            callback(new ns.VedleggLayout(
+                                                    {
+                                                        model: soknadRapportModel,
+                                                        parentObject: 'rapport'
+                                                    }));
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        {
+                            itemId: 'sammendrag',
+                            contentView: {
+                                newInstance: function (callback) {
+                                    soknadRapportModel.fetch({
+                                        'success': function () {
+                                            callback(new ns.RapportSammendragView(
+                                                    {
+                                                        model: soknadRapportModel,
+                                                        soknadModel: soknadModel
+                                                    }));
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    ]
+                    ;
+
+            var SoknadLeftMenuView = ns.LeftMenuView.extend({
+                childViewOptions: function (model, index) {
+                    return leftMenuTitleToContentView;
+                }
+            });
+
+            var leftMenuView = new SoknadLeftMenuView({
+                urlRedirectOnCancel: "/",
+                contentRegion: layout.content,
+                collection: leftMenuElements
+            });
+
+            ns.TilskuddApp.start({
+                pageContent: layout
+            });
+
+            $.when(soknadRapportModelPromise, soknadModelPromise, actionMenuElementsPromise).then(
+                    function () {
+                        layout.menu.show(leftMenuView);
+                        layout.actionbar.show(actionMenuView);
+                        layout.title.show(editRapportTitleView);
+                        ns.TilskuddApp.vent.trigger("tilskudd:ready");
+                    },
+                    function () {
+                        console.error("error loading");
+                    }
+            );
+
+        }(Tilskudd));
+    </script>
+{% endblock %}
+

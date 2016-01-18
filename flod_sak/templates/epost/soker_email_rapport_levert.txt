@@ -1,0 +1,12 @@
+Hei,
+
+Trondheim kommune bekrefter å ha mottatt din rapport på tilskudd.
+
+Dersom saksbehandler ønsker mer opplysninger blir du kontaktet. Dersom du ikke hører noe er rapporten godkjent.
+
+For å se status på din rapport kan du logge inn her: https://tilskudd.trondheim.kommune.no/soknad/{{ soknad_id }}
+
+Dette er en automatisk generert e-post som ikke kan besvares.
+
+Med vennlig hilsen
+Trondheim kommune

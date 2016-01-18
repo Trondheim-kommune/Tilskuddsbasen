@@ -1,0 +1,31 @@
+<script id="ny_soknad_action_template" type="text/template">
+    
+    <div class="well new-application margin-top-general">
+		<h2>Ny søknad</h2>
+		<p>Hvis du ikke finner tilskuddsordningen som du ønsker å søke tilskudd fra, kan det være fordi fristen har gått ut eller årets midler er fordelt. Du finner mer informasjon på <a href="http://www.trondheim.kommune.no/tilskudd/" target="_blank">Trondheim kommunes nettsider</a>.</p>
+		
+		<div class="controls form-inline">
+			<label for="tilskuddsordning-select">Tilskuddsordning:</label>
+			<select class="form-control no-full-width" id="valgt_tilskuddsordning">
+				<% if (_.isUndefined(tilskuddsordninger)){ %>
+                <option>Henter tilskuddsordninger...</option>
+	            <% } else { %>
+	                <option>---</option>
+	                <% tilskuddsordninger.each(function(item){ %>
+	                <option value='<%- item.get("id") %>'> <%- item.get("navn") %> </option>
+	                <% }); %>
+	            <% } %>
+			</select>
+		</div>
+        <div class="form-inline form-group">
+            <label for="soknadsfrist">Frist:</label>
+            <span id="soknadsfrist"></span>
+        </div>
+
+	    <div class="controls pull-right-desktop-only clearfix margin-top-general-medium-down control-group">
+	    	<span class="margin-right-general pull-left-desktop-only margin-top-small">Start veiviser for å søke tilskudd.</span>
+	  		<button type="button" id="cancel_action" class="btn btn-default pull-left-desktop-only margin-right-small">Avbryt</button>
+	    	<button type="button" id="ok_action" class="btn btn-primary pull-right-desktop-only margin-right-small">Start</button>
+	    </div>
+	</div>
+</script>

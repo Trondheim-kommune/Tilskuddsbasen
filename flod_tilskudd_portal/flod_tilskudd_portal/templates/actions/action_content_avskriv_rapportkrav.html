@@ -1,0 +1,19 @@
+<script id="avskriv_rapportkrav_action_template" type="text/template">
+    <div class="well margin-top-general clearfix popup">
+        <h2>Avskriv rapportkrav</h2>
+
+        <label class="pull-left-desktop-only" for="id_merknad_orsak">Angi årsak:</label>
+
+        <div class="pull-right-desktop-only">Maks 700 tegn</div>
+        <div class="clearfix">
+            <textarea class="form-control" id="id_merknad_orsak" name="merknad_orsak" rows="3" cols="50" maxlength="700"></textarea>
+        </div>
+
+        <div class="margin-top-general-mobile-only pull-right-desktop-only control-group">
+            <small class="margin-right-general pull-left-desktop-only margin-top-small"><span class="glyphicon glyphicon-warning-sign"></span> Rapportkravet vil bli avskrevet
+            </small>
+            <button type="button" id="cancel_action" class="btn btn-default">Avbryt</button>
+            <button type="button" id="ok_action" class="btn btn-danger margin-right-small">Avskriv rapportkrav</button>
+        </div>
+    </div>
+</script>

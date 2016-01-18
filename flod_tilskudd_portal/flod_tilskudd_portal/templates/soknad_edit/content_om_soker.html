@@ -1,0 +1,74 @@
+<script id="om_soker_template" type="text/template">
+    <div class="well margin-top-general">
+
+        <form method="post">
+	        <div class="row">
+                <div class="col-md-3 pull-right-desktop-only">
+                    <p>
+                        <span class="glyphicon glyphicon-info-sign margin-right-small margin-top-general"></span>
+                        Hvis organisasjonen er registrert i Brønnøysundregistrene hentes opplysningene derfra. Hvis opplysningene ikke stemmer må du melde endring i <a href="http://www.brreg.no/elektronisk/" target="_blank">Brønnøysundregistrene</a>.
+                    </p>
+                    <p>
+                    	<p><span class="glyphicon glyphicon-info-sign margin-right-small margin-top-general"></span>
+                        Hvis din organisasjon ikke finnes i nedtrekkslisten:<p />
+                        <p>Lagre denne søknaden, og gå til
+                        	<a href="http://www.trondheim.kommune.no/aktorbasen/" target="_blank">Aktørbasen</a>.
+                            Du kan fortsette med søknaden etterpå.
+                        </p>
+                    </p>
+                </div>
+				<div class="col-md-9">
+					<h2>Om søker</h2>
+					<p class="fill-out-notification"><span class="margin-right-small glyphicon glyphicon-exclamation-sign"></span>Fyll ut alle feltene under</p>
+					<div class="form-group form-inline">
+					  <label for="selected_organisation">Jeg søker på vegne av</label>
+					   <select id="selected_organisation" class="form-control"></select>
+					   <button type="button" id="update_organisation_information" class="btn btn-default margin-top-small-mobile">Hent informasjon</button>
+					</div>
+				</div>
+                <div class="col-md-9 margin-top-small">
+                    <div><span class="bold">Organisasjonsnummer: </span><span id="id_orgnumber"></span></div>
+                    <div><span class="bold">Organisasjonsnavn: </span><span id="id_org_name"></span></div>
+                    <div><span class="bold">Organisasjonstelefon: </span><span id="id_phone_number"></span></div>
+                    <div><span class="bold">Organisasjons e-post: </span><span id="id_email_address"></span></div>
+                    <div class="form-inline align-inputs-inside form-group margin-top-small"><label for="id_kontonummer">Bankkonto</label><input name="kontonummer" id="id_kontonummer" type="text" class="form-control"></div>
+                    <small class="additional-info">(Uten punktum, 11 siffer)</small>
+                </div>
+                <div class="col-md-9 margin-top-general">
+                    <div><span class="bold">Kontaktperson(deg): </span><span id="id_contact_person_name"></span></div>
+                    <div class="form-inline align-inputs-inside form-group margin-top-small"><label for="id_telefon">Telefon </label><input id="id_telefon" name="telefon" type="text" class="form-control required"></div>
+                    <div class="form-inline align-inputs-inside form-group"><label for="id_epost">E-post </label><input id="id_epost" name="epost" type="text" class="form-control required"></div>
+                    <small class="additional-info">(NB. Svar på søknaden blir sendt til denne e-postadressen.)</small>
+                </div>
+			</div>
+
+            <div class="margin-top-general">
+                <label for="id_beskrivelse">Beskrivelse av organisasjonen: </label>
+                <textarea class="form-control" id="id_beskrivelse" rows="3" cols="50"
+                                  readonly="readonly"></textarea>
+                <small class="additional-info">(Feltet er tomt hvis det ikke er registrert en beskrivelse i Aktørbasen)</small>
+            </div>
+            <div class="margin-top-general ">
+                <small class="additional-info pull-right-desktop-only dotted-frame padding-general">
+                    <p>Ønsker du å endre denne beskrivelsen av organisasjonen?
+                    Trykk på Lagre-knappen nedenfor. Velg Min profil i toppmenyen og deretter Organisasjon.
+                    Når du har endret beskrivelsen kan du fortsette med denne søknaden.</p>
+
+                    <p>Beskrivelse av eventuell avdeling eller underorganisasjon kan gjøres på neste side.</p>
+                </small>
+            </div>
+
+			<div class="control-group">
+                <small class="margin-right-general">Skjemaet mellomlagres når du trykker på forrige eller neste.
+                </small>
+			  <button type="button" id="previous_button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> Forrige</button>
+                <button type="button" id="cancel_button" class="btn btn-default">Avbryt</button>
+                <button type="button" id="save_button" class="btn btn-default">Lagre</button>
+			  <div class="pull-right">
+			   	<button type="button" id="next_button" name="next-button" class="btn btn-primary">Neste <i class="glyphicon glyphicon-chevron-right"></i></button>
+			  </div>
+			</div>
+
+        </form>
+    </div>
+</script>

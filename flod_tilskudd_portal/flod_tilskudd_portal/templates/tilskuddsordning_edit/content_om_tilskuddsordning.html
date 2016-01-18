@@ -1,0 +1,100 @@
+<script id="redigere_tilskuddsordning_template" type="text/template">
+    <div class="padding-general margin-top-general well">
+        <h2><span id="id_navn"></span></h2>
+
+        <p>Fyll ut feltene under</p>
+
+        <div class="row form-group">
+            <label class="col-md-2" for="id_soknadsfrist">Søknadsfrist</label>
+
+            <div class="col-md-4">
+                <input id="id_soknadsfrist" name="soknadsfrist" class="datepicker form-control" type="text"
+                       data-date-format="dd.mm.yyyy">
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <label class="col-md-2">Rapport og utbetaling</label>
+            <div class="col-md-4">
+                <select id="id_type" name="id_type" class="form-control form-inline"></select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-md-2" for="id_budsjett">Budsjett</label>
+
+            <div class="col-md-4">
+                <input id="id_budsjett" name="budsjett" class="form-control" type="text">
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <label class="col-md-2" for="id_rapportfrist">Rapportfrist</label>
+
+            <div class="col-md-4">
+                <input id="id_rapportfrist" name="rapportfrist" class="datepicker form-control" type="text"
+                       data-date-format="dd.mm.yyyy">
+            </div>
+        </div>
+
+        <div class="row form-group">
+
+            <label class="col-md-2" for="id_publisert">Publisert</label>
+
+            <div class="col-md-10">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="id_publisert" name="id_publisert">
+                        Ja (Kryss av her når søknadslisten skal åpnes for søkere.)
+                    </label>
+            </div>
+        </div>
+
+        <div class="row form-group">
+
+            <label class="col-md-2" for="id_balanse">Budsjett må gå i balanse</label>
+
+            <div class="col-md-10">
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="id_balanse" name="id_balanse">
+                    Ja
+                </label>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <label class="col-md-2" for="id_lenke_til_retningslinjer">Lenke til retningslinjer</label>
+
+            <div class="col-md-10">
+                <input id="id_lenke_til_retningslinjer" name="lenke_til_retningslinjer" maxlength="100" class="form-control" type="text">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="id_innledningstekst">Tekst for Innledningssiden</label>
+            <span class="pull-right-desktop-only">Maks 300 tegn</span>
+            <textarea class="form-control" id="id_innledningstekst" name="innledningstekst" maxlength="300" rows="5"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="id_prosjekttekst">Tekst for Prosjektbeskrivelsen</label>
+            <span class="pull-right-desktop-only">Maks 300 tegn</span>
+            <textarea class="form-control" id="id_prosjekttekst" name="prosjekttekst" maxlength="300" rows="5"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="id_budsjettekst">Tekst for Budsjettsiden</label>
+            <span class="pull-right-desktop-only">Maks 300 tegn</span>
+            <textarea class="form-control" id="id_budsjettekst" name="budsjettekst" maxlength="300" rows="5"></textarea>
+        </div>
+
+        <div class="control-group">
+            <small class="margin-right-general">Skjemaet mellomlagres når du trykker på forrige eller neste.
+            </small>
+            <button type="button" id="cancel_button" class="btn btn-default">Avbryt</button>
+            <button type="button" id="save_button" class="btn btn-default">Lagre</button>
+            <div class="pull-right">
+                <button type="button" id="next_button" name="next-button" class="btn btn-primary">Neste <i class="glyphicon glyphicon-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,120 @@
+<html>
+<head>
+    <style>
+        tr.total {
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            padding: 3px 0 1px 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Vedtak fra Trondheim kommune</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th width="20%"></th>
+        <th width="80%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Vedtak</td>
+        <td>{{ vedtak }}</td>
+    </tr>
+    <tr>
+        <td>Vedtatt beløp</td>
+        <td>{{ vedtatt_belop }}</td>
+    </tr>
+    <tr>
+        <td>Vedtaksdato</td>
+        <td>{{ vedtaksdato }}</td>
+    </tr>
+    <tr>
+        <td>Saksbehandler</td>
+        <td>{{ saksbehandler }}</td>
+    </tr>
+    <tr>
+        <td>Vedtatt av</td>
+        <td>{{ vedtatt_av }}</td>
+    </tr>
+    <tr>
+        <td>Rapportfrist</td>
+        <td>{{ rapportfrist }}</td>
+    </tr>
+    </tbody>
+</table>
+
+<h1>Informasjon om søknaden</h1>
+<table>
+    <thead>
+    <tr>
+        <th width="20%"></th>
+        <th width="80%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Saksnummer</td>
+        <td>{{ saksnummer }}</td>
+    </tr>
+    <tr>
+        <td>Tilskuddsordning</td>
+        <td>{{ tilskuddsordning_navn }}</td>
+    </tr>
+    <tr>
+        <td>Søker</td>
+        <td>{{ organisasjon_navn }}</td>
+    </tr>
+    <tr>
+        <td>Kontaktperson</td>
+        <td>{{ kontaktperson }}</td>
+    </tr>
+    <tr>
+        <td>{{ tekst_orgnr_eller_fnr }}</td>
+        <td>{{ orgnr_eller_fnr }}</td>
+    </tr>
+    <tr>
+        <td>Kontonummer</td>
+        <td>{{ kontonummer }}</td>
+    </tr>
+    <tr>
+        <td>Prosjekt/aktivitet</td>
+        <td>{{ prosjektnavn }}</td>
+    </tr>
+    <tr>
+        <td>Innsendt</td>
+        <td>{{ innsendt }}</td>
+    </tr>
+    </tbody>
+</table>
+
+<h1>Merk følgende</h1>
+<p >{{ merk_folgende|nl2br }}</p>
+
+{% if andre_opplysninger != "" %}
+<h1>Andre opplysninger</h1>
+<p >{{ andre_opplysninger|nl2br }}</p>
+{% endif %}
+
+{% if vedtatt_belop > 0 %}
+<h1>Husk også</h1>
+<p >
+    Du er pliktig til å oppbevare regnskap med bilag i minst 5 år.
+    Ved henvendelse må dette kunne legges fram på kort varsel.
+</p>
+<p >
+    Vi ber om at det i program og PR-materiell gjøres oppmerksom på at prosjektet/tiltaket støttes av Trondheim kommune.
+    Trondheim kommunes logo finner du her:
+    <a href="http://www.trondheim.kommune.no/logo" target="_blank">www.trondheim.kommune.no/logo</a>
+</p>
+<p >
+    Vi oppfordrer alle som får kommunalt tilskudd til å legge til rette for at arrangement er tilgjengelig for bevegelseshemmede.
+    Ta gjerne med informasjon om dette i annonsering. Les mer:
+    <a href="http://www.trondheim.kommune.no/universellutforming" target="_blank">www.trondheim.kommune.no/universellutforming</a>
+</p>
+{% endif %}
+
+</body>
+</html>

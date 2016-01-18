@@ -1,0 +1,18 @@
+<script id="rapport_view_soknaden_template" type="text/template">
+   <div class="well margin-top-general">
+		<h2>Søknaden</h2>
+
+		{% include "common/soknad_summary.html" %}
+
+        <div class="control-group">
+            <small class="margin-right-general">Skjemaet mellomlagres når du trykker på forrige eller neste.
+            </small>
+           <button type="button" id="previous_button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> Forrige</button>
+           <button type="button" id="cancel_button" class="btn btn-default">Avbryt</button>
+           <div class="pull-right">
+			   	<button type="button" id="next_button" name="next-button" class="btn btn-primary">Neste <i class="glyphicon glyphicon-chevron-right"></i></button>
+		   </div>
+       </div>
+
+	</div>
+</script>

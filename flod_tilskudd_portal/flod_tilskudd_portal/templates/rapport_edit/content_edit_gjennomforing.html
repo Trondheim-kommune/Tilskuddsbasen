@@ -1,0 +1,41 @@
+<script id="rapport_edit_gjennomforing_template" type="text/template">
+    <div class="well">
+        <h2>Gjennomføring</h2>
+
+        <div class="form-group margin-top-small">
+            <label for="id_prosjekt_gjennomforing">Beskriv kort hvordan aktiviteten/prosjektet ble gjennomført</label>
+
+            <div class="pull-right-desktop-only">Maks 800 tegn</div>
+            <textarea class="form-control" id="id_prosjekt_gjennomforing" name="prosjekt_gjennomforing"
+                      maxlength="800"></textarea>
+        </div>
+
+        <fieldset>
+            <div class="wrapper">
+                <legend class="labeling">Sted og tid</legend>
+            </div>
+            <div class="row-fluid" id="id_arrangement"></div>
+        </fieldset>
+        <a href="#" id="add_arrangement" class="add-more-scheme margin-top-small">+ Legg til flere arrangement</a>
+
+        <div class="form-group margin-top-small">
+            <label for="id_prosjekt_avvik">Beskriv eventuelle avvik i forhold til søknaden</label>
+
+            <div class="pull-right-desktop-only">Maks 300 tegn</div>
+            <textarea class="form-control" id="id_prosjekt_avvik" name="prosjekt_avvik" maxlength="300"></textarea>
+        </div>
+
+        <div class="margin-top-general">
+            <small class="margin-right-general">Skjemaet mellomlagres når du trykker på forrige eller neste.
+            </small>
+            <div class="control-group">
+                <button type="button" id="previous_button" name="previous_button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> Forrige</button>
+                <button type="button" id="cancel_button" name="cancel_button" class="btn btn-default">Avbryt</button>
+                <button type="button" id="save_button" name="save_button" class="btn btn-default">Lagre</button>
+                <div class="pull-right">
+                    <button type="button" id="next_button" name="next_button" class="btn btn-primary">Neste <i class="glyphicon glyphicon-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

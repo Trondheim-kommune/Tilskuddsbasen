@@ -1,0 +1,141 @@
+<form class="form-horizontal" role="form">
+    <div class="summary-section">
+        <p class="summary-section-title">Vedtak</p>
+        <div class="form-group ">
+            <label for="id_vedtak" class="col-sm-3 control-label">Vedtak</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_vedtak"></p>
+            </div>
+        </div>
+        <% if (tilsagn) { %>
+        <div class="form-group ">
+            <label for="id_vedtatt_belop" class="col-sm-3 control-label">Vedtatt beløp</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_vedtatt_belop"></p>
+            </div>
+        </div>
+        <% } %>
+        <div class="form-group ">
+            <label for="id_vedtaksdato" class="col-sm-3 control-label">Vedtaksdato</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_vedtaksdato"></p>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label for="id_saksbehandler" class="col-sm-3 control-label">Saksbehandler</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_saksbehandler"></p>
+            </div>
+
+        </div>
+        <div class="form-group ">
+            <label for="id_vedtatt_av" class="col-sm-3 control-label">Vedtatt av</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_vedtatt_av"></p>
+            </div>
+        </div>
+        <% if (tilsagn) { %>
+        <div class="form-group ">
+            <label for="id_rapportfrist" class="col-sm-3 control-label">Rapportfrist</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_rapportfrist"></p>
+            </div>
+        </div>
+        <% } %>
+        <hr>
+        <div class="form-group ">
+            <label for="id_saksnummer" class="col-sm-3 control-label">Saksnummer</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_saksnummer"></p>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label for="id_tilskuddsordning_navn" class="col-sm-3 control-label">Tilskuddsordning</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_tilskuddsordning_navn"></p>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label for="id_soker_name" class="col-sm-3 control-label">Søker</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_soker_name"></p>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label for="id_kontaktperson" class="col-sm-3 control-label">Kontaktperson</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_kontaktperson"></p>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label for="id_org_nummer" class="col-sm-3 control-label">Organisasjonsnummer</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_org_nummer"></p>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label for="id_kontonummer" class="col-sm-3 control-label">Kontonummer</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_kontonummer"></p>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label for="id_prosjektnavn" class="col-sm-3 control-label">Prosjekt/aktivitet</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_prosjektnavn"></p>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label for="id_levert_dato" class="col-sm-3 control-label">Innsendt</label>
+
+            <div class="col-sm-9">
+                <p class="form-control-static" id="id_levert_dato"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="summary-section">
+        <p class="summary-section-title">Merk følgende</p>
+        <p class="preserve-breaks" id="id_vedtakstekst"></p>
+    </div>
+
+    <% if (nyeste_vedtak.andre_opplysninger !== null && nyeste_vedtak.andre_opplysninger !== "") { %>
+    <div class="summary-section">
+        <p class="summary-section-title">Andre opplysninger</p>
+        <p class="preserve-breaks" id="id_andre_opplysninger"></p>
+    </div>
+    <% } %>
+
+    <% if (tilsagn) { %>
+    <div class="summary-section">
+        <p class="summary-section-title">Husk også</p>
+        <p >
+            Du er pliktig til å oppbevare regnskap med bilag i minst 5 år.
+            Ved henvendelse må dette kunne legges fram på kort varsel.
+        </p>
+        <p >
+            Vi ber om at det i program og PR-materiell gjøres oppmerksom på at prosjektet/tiltaket støttes av Trondheim kommune.
+            Trondheim kommunes logo finner du her:
+            <a href="http://www.trondheim.kommune.no/logo" target="_blank">www.trondheim.kommune.no/logo</a>
+        </p>
+        <p >
+            Vi oppfordrer alle som får kommunalt tilskudd til å legge til rette for at arrangement er tilgjengelig for bevegelseshemmede.
+            Ta gjerne med informasjon om dette i annonsering. Les mer:
+            <a href="http://www.trondheim.kommune.no/universellutforming" target="_blank">www.trondheim.kommune.no/universellutforming</a>
+        </p>
+    </div>
+    <% } %>
+</form>

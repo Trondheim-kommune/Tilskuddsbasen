@@ -1,0 +1,112 @@
+<script id="vedlegg_template" type="text/template">
+    <div class="well container-fluid margin-top-general">
+        <h2>Vedlegg</h2>
+
+        <% if(parentObject == 'soknad') { %>
+        <p>For de fleste tilskuddsordningene vil det ikke være nødvendig å laste opp vedlegg. Se på retningslinjene for
+            ordningen om det er krav til vedlegg. Kun følgende filtyper kan lastes opp: pdf, doc, docx, xls, xlsx, odt, ods,
+            xml, tiff, tif, jpeg, jpg, mp2, mp3 og txt.
+        </p>
+        <% } else if (parentObject == 'rapport') { %>
+
+        <p>Hvis du allerede har lagt inn dekkende informasjon i regnskapet, er det ikke nødvendig å
+            legge ved regnskap som vedlegg også.
+        </p>
+        <% } %>
+
+        <div id="nedlastedefiler">
+        </div>
+
+        <div id="vedlagtelinker">
+        </div>
+
+        <div id="navigering">
+        </div>
+    </div>
+</script>
+
+<script id="navigering_template" type="text/template">
+    <div class="margin-top-general">
+        <div class="control-group margin-top-general">
+            <small class="margin-right-general">Skjemaet mellomlagres når du trykker på forrige eller neste.
+            </small>
+            <button type="button" id="previous_button" name="previous_button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> Forrige</button>
+
+            <button type="button" id="cancel_button" class="btn btn-default">Avbryt</button>
+            <button type="button" id="save_button" class="btn btn-default">Lagre</button>
+
+            <div class="controls pull-right">
+                <button type="button" id="next_button" name="next_button" class="btn btn-primary">Neste <i class="glyphicon glyphicon-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="vedlagt_link_template" type="text/template">
+    <form method="post">
+        <h2>Filer publisert andre steder</h2>
+
+        <div class="table-responsive">
+            <table class="table stacked">
+                <thead>
+                <tr>
+                    <th>Nettadresse</th>
+                    <th>Beskrivelse</th>
+                    <th>Evt. brukernavn og passord</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody id="id_linker">
+                </tbody>
+            </table>
+        </div>
+
+        <a id="add_link">+ Oppgi flere</a>
+    </form>
+</script>
+
+<script id="vedlagt_link_row_template" type="text/template">
+
+    <td><input title="Nettadresse" type="text" id="id_nettadresse" class="form-control" placeholder="Nettaddresse"></td>
+    <td><input title="Beskrivelse" type="text" id="id_beskrivelse" maxlength="60" class="form-control" placeholder="Beskrivelse"></td>
+    <td><input title="Eventuelt passord" type="text" id="id_passord" maxlength="60" class="form-control" placeholder="Evt.passord"></td>
+    <td>
+        <button type="button" class="btn btn-default pull-right-desktop-only remove_vedlagtlink">Fjern</button>
+    </td>
+</script>
+
+<script id="vedlagt_fil_template" type="text/template">
+
+    <div class="margin-bottom-general">
+        <input title="Last opp fil. Maks størrelse:100MB" type="file" id="id_upload" class="filestyle" name="upload_file"
+               accept=".pdf, .doc, .docx, .xls, .xlsx, .odt, .ods, .xml, .tiff, .tif, .jpeg, .jpg, .mp2, .mp3, .txt"/>
+
+        <div class="bold max-size-text margin-top-small">Maks størrelse: 100Mb.</div>
+    </div>
+    <span class="loading-spinner"></span>
+
+    <h2 class="margin-top-general">Opplastede filer</h2>
+    <div id="id_vedlagtefiler" class="table-responsive">
+        <table class="table stacked">
+            <thead>
+            <tr>
+                <th>Filnavn</th>
+                <th>Tittel</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="id_filer">
+            </tbody>
+        </table>
+    </div>
+</script>
+
+<script id="vedlagt_fil_row_template" type="text/template">
+    <td><a id="id_filelink">
+        <div id="id_nettadresse"></div>
+    </a></td>
+    <td><input title="Tittel" type="text" id="id_beskrivelse" maxlength="60" class="form-control" placeholder="Tittel"></td>
+    <td>
+        <button type="button" class="btn btn-default pull-right-desktop-only remove_vedlagtfil">Fjern</button>
+    </td>
+</script>

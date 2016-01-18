@@ -1,0 +1,11 @@
+Hei,
+
+
+Du har mottatt en søknad om tilskudd "{{tilskuddsordning_navn}}". Logg inn i Tilskuddsbasen for å behandle søknaden.
+
+Logg inn her https://tilskudd.trondheim.kommune.no/soknad/{{ soknad_id }}
+
+Dette er en automatisk generert e-post som ikke kan besvares.
+
+Med vennlig hilsen
+Trondheim kommune

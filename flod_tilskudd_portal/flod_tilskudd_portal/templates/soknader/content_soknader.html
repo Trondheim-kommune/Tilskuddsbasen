@@ -1,0 +1,50 @@
+<script type="text/template" id="soknadsliste_table_template">
+    <div class="padding-general margin-top-general well soknader-page">
+        <h2>Søknader</h2>
+
+        <div class="table-responsive">
+            <table class="table odd-even-table">
+                <thead>
+                <tr>
+                    <th>Søker</th>
+                    <th>Saksnummer</th>
+                    <th>Aktivitet/prosjekt</th>
+                    <th>Kontaktperson</th>
+                    <th>Dato levert</th>
+                    <th>Status</th>
+                    <th>Søknadsbeløp</th>
+                    <th>Vedtatt beløp</th>
+                </tr>
+                </thead>
+
+                <tbody id="list_soknader">
+                </tbody>
+
+                <tfoot id="aggr_soknader">
+                    <tr>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td class="text-right"><b>Sum kr</b></td>
+                        <td id="id_sum_omsokt_belop" class="text-right"></td>
+                        <td id="id_sum_vedtatt_belop" class="text-right"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="soknadsliste_tablerow_template">
+    <td tabindex="0"><% if (typeof(organisation) !== 'undefined') { %><%- organisation.name %><% } %></td>
+    <td tabindex="0"><%- id %></td>
+    <td tabindex="0"><%- prosjektnavn %></td>
+    <td tabindex="0"><%- person.name %></td>
+    <td tabindex="0" id="id_levert_dato"></td>
+    <td tabindex="0"><%- status %></td>
+    <td tabindex="0" class="text-right"><%- omsokt_belop %></td>
+    <td tabindex="0" id="id_vedtatt_belop" class="text-right"></td>
+</script>
+

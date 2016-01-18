@@ -1,0 +1,4 @@
+Til {{ aktor }}. Trondheim kommune bekrefter med dette at {{ soker }} har sendt en søknad om tilskudd til {{ prosjektnavn }} på vegne av {{ aktor }}.
+Søknaden ble sendt {{ levert_dato }}.
+
+Lenke til søknaden: https://tilskudd.trondheim.kommune.no/soknad/{{ soknad_id }}

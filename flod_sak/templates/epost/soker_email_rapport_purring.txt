@@ -1,0 +1,10 @@
+Hei,
+
+Trondheim kommune minner om at rapportfrist for deres søknad er {{ rapportfrist }}.
+
+For å levere rapport må du logge inn her: https://tilskudd.trondheim.kommune.no/soknad/{{ soknad_id }}
+
+Dette er en automatisk generert e-post som ikke kan besvares.
+
+Med vennlig hilsen
+Trondheim kommune
