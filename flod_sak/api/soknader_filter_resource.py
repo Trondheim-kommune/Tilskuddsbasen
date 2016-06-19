@@ -7,6 +7,7 @@ from domain.models import Soknad
 from repo.soknad_repo import SoknadRepo
 from base_resource import BaseResource
 from api.auth import get_user_from_auth, is_soker, get_organisations_for_person, is_godkjenner, is_saksbehandler
+from statemachine.soknad_sm import SoknadStateMachine
 from utils.facets import get_names, AnyOfFacet, OneOfFacet, FacetValue, periods_in_the_past, FreeFacet
 
 
@@ -50,6 +51,7 @@ class SoknaderFilterResource(BaseResource):
         return facet_values
 
     def get_saksbehandler_filters(self):
+        sm = SoknadStateMachine()
         facets = [
             FreeFacet(name="Søker",
                       values=[FacetValue(name="Organisasjonsnavn")]),
@@ -59,9 +61,8 @@ class SoknaderFilterResource(BaseResource):
             OneOfFacet(name="Dato levert",
                        values=[FacetValue(name=name, value=name) for name in get_names(periods_in_the_past)]),
             AnyOfFacet(name="Status",
-                       values=self.transfrom_to_facet_values(
-                           SoknadRepo.find_states_knyttet_til_soknader(exclude_soknad_states=["Kladd"])
-                       )),
+                       values=[FacetValue(name=sm.find_state_by_id(status).state_name_saksbehandler, value=status) for status in SoknadRepo.find_states_knyttet_til_soknader(exclude_soknad_states=["Kladd"])]
+                       ),
             AnyOfFacet(name="Saksbehandler",
                        values=self.transfrom_to_facet_values(
                            SoknadRepo.find_saksbehandlere_knyttet_til_soknader()

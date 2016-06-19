@@ -1,8 +1,14 @@
 <script id="redigere_tilskuddsordning_template" type="text/template">
     <div class="padding-general margin-top-general well">
-        <h2><span id="id_navn"></span></h2>
+        <h2>Fyll ut feltene under</h2>
 
-        <p>Fyll ut feltene under</p>
+        <div class="row form-group margin-top-general">
+            <label class="col-md-2" for="id_navn">Navn på tilskuddsordning</label>
+
+            <div class="col-md-4">
+                <input id="id_navn" name="navn" class="form-control" type="text">
+            </div>
+        </div>
 
         <div class="row form-group">
             <label class="col-md-2" for="id_soknadsfrist">Søknadsfrist</label>
@@ -71,20 +77,26 @@
 
         <div class="form-group">
             <label for="id_innledningstekst">Tekst for Innledningssiden</label>
-            <span class="pull-right-desktop-only">Maks 300 tegn</span>
-            <textarea class="form-control" id="id_innledningstekst" name="innledningstekst" maxlength="300" rows="5"></textarea>
+            <span class="pull-right-desktop-only">Maks 600 tegn</span>
+            <textarea class="form-control" id="id_innledningstekst" name="innledningstekst" maxlength="600" rows="5"></textarea>
         </div>
 
         <div class="form-group">
             <label for="id_prosjekttekst">Tekst for Prosjektbeskrivelsen</label>
-            <span class="pull-right-desktop-only">Maks 300 tegn</span>
-            <textarea class="form-control" id="id_prosjekttekst" name="prosjekttekst" maxlength="300" rows="5"></textarea>
+            <span class="pull-right-desktop-only">Maks 600 tegn</span>
+            <textarea class="form-control" id="id_prosjekttekst" name="prosjekttekst" maxlength="600" rows="5"></textarea>
         </div>
 
         <div class="form-group">
             <label for="id_budsjettekst">Tekst for Budsjettsiden</label>
-            <span class="pull-right-desktop-only">Maks 300 tegn</span>
-            <textarea class="form-control" id="id_budsjettekst" name="budsjettekst" maxlength="300" rows="5"></textarea>
+            <span class="pull-right-desktop-only">Maks 600 tegn</span>
+            <textarea class="form-control" id="id_budsjettekst" name="budsjettekst" maxlength="600" rows="5"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="id_husk_ogsa">Husk også</label>
+            <span class="pull-right-desktop-only">Maks 1000 tegn</span>
+            <textarea class="form-control" id="id_husk_ogsa" name="husk-ogsa" maxlength="1000" rows="8"></textarea>
         </div>
 
         <div class="control-group">

@@ -23,6 +23,7 @@ class TilskuddsordningRepo(BaseRepo):
         TilskuddsordningRepo.update_model(tilskuddsordning, 'godkjenner_id', data)
         TilskuddsordningRepo.update_model(tilskuddsordning, 'godkjenner_tittel', data)
         TilskuddsordningRepo.update_model(tilskuddsordning, 'lenke_til_retningslinjer', data)
+        TilskuddsordningRepo.update_model(tilskuddsordning, 'husk_ogsa', data)
 
         if data.get('saksbehandlere') is not None:
             TilskuddsordningSaksbehandlereRepo.update_sub_models(data.get('saksbehandlere'), tilskuddsordning, 'saksbehandlere')

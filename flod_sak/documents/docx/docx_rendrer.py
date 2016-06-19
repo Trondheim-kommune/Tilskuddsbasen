@@ -56,7 +56,7 @@ def create_docx_from_template(docx_fname,
 
 
         # render template
-        template = jinja2.Template(original_document_contents)
+        template = jinja2.Template(original_document_contents, autoescape=True)
         rendered_document = template.render(**template_data)
 
         # append template to new zip

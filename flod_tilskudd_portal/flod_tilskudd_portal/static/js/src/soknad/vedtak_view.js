@@ -157,11 +157,20 @@ var Tilskudd = window.Tilskudd || {};
                     }
                     return "";
                 }
+            },
+            "#id_husk_ogsa": {
+                observe: "husk_ogsa",
+                onGet: function(value) {
+                    return this.addLinkTagToLinks(value);
+                },
+                updateMethod: 'html',
+                escape: true
             }
         },
 
         initialize: function () {
             this.model.set("nyeste_vedtak", null);
+            this.model.set('husk_ogsa', this.model.get("tilskuddsordning").husk_ogsa);
             var nyeste_vedtak = this.model.getNyesteFattetVedtak();
             if (nyeste_vedtak!==null && !_.isUndefined(nyeste_vedtak)) {
                 this.model.set("nyeste_vedtak", nyeste_vedtak);
@@ -182,6 +191,11 @@ var Tilskudd = window.Tilskudd || {};
                     }
                 });
             }
+        },
+
+        addLinkTagToLinks: function(text) {
+            var replacePattern1 = /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+            return (text ? text.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>') : '');
         },
 
         downloadVedtaksbrev: function (e) {

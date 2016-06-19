@@ -396,6 +396,7 @@ var Tilskudd = window.Tilskudd || {};
             this.tilskuddsordning = new ns.TilskuddsordningModel();
             this.childViewOptions = {'mode': this.options.mode};
             _.bindAll(this, "updateCollection", "updateTilskuddsordning");
+
             ns.TilskuddApp.controller.registerUrlQueryParameterSubscription(ns.FilterSubscription);
             this.listenTo(ns.TilskuddApp.vent, ns.FilterSubscription.updateFromUrlEvent, this.updateCollection);
             this.listenTo(ns.TilskuddApp.vent, ns.FilterUtils.getFilterChangedEvent(), this.updateCollection);
@@ -412,6 +413,8 @@ var Tilskudd = window.Tilskudd || {};
                     console.log("Fetching søknadsliste based on information in URL: " + JSON.stringify(urlFilters));
                     filters = urlFilters;
                 } else if (!_.isUndefined(latestFilters)) {
+                    // Comment: A bit weird to trigger latestcookiefilters from here...should have been
+                    // done in application controller?
                     filters = latestFilters;
                     ns.TilskuddApp.vent.trigger(
                         ns.FilterSubscription.updateFromAppEvent,
@@ -437,8 +440,23 @@ var Tilskudd = window.Tilskudd || {};
         },
 
         updateTilskuddsordning: function (urlFilters, requestedBy) {
+            // When clicking back to list of soknader, this is triggered before queryParam set
+            // therefore we have to check the cookie for filters.
             if (_.isUndefined(requestedBy) || _.isEqual(requestedBy, this)) {
-                var tilskuddFacet = _.findWhere(urlFilters, {'facetName': 'Tilskuddsordning'});
+                var filters = null;
+                var latestFilters = ns.FilterUtils.getLatestFiltersCookie();
+                latestFilters = (latestFilters && latestFilters.length > 0) ? latestFilters : undefined;
+                if (urlFilters && urlFilters.length > 0) {
+                    console.log("Update tilskuddordninger based on information in URL: " + JSON.stringify(urlFilters));
+                    filters = urlFilters;
+                } else if (!_.isUndefined(latestFilters)) {
+                    filters = latestFilters;
+                    console.log("Update tilskuddsordninger based on latest cookie filters: " + JSON.stringify(latestFilters));
+                } else {
+                    filters = [];
+                }
+
+                var tilskuddFacet = _.findWhere(filters, {'facetName': 'Tilskuddsordning'});
                 if (!_.isUndefined(tilskuddFacet) && tilskuddFacet.values.length === 1) {
                     this.tilskuddsordning.set({'id': tilskuddFacet.values[0].queryValueName});
                     this.tilskuddsordning.fetch();

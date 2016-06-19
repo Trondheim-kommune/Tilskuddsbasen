@@ -89,6 +89,13 @@ class OkonomiBelop(MandatoryFieldsValidator, Base):
         UniqueConstraint('okonomipost_id', 'okonomibelop_type', name='uix_okonomipost_id_okonomibelop_type'),
         CheckConstraint('belop >= 0', name="chk_okonomi_belop_belop"))
 
+    def validate_mandatory_fields(self):
+        super(OkonomiBelop, self).validate_mandatory_fields()
+        if self.okonomibelop_type == 'Regnskap':
+            if 'belop' in self.missing and self.belop is not None:
+                self.missing.pop('belop')
+        return self.missing
+
 
 soknad_status_enums = Enum("Kladd",
                            "Innsendt",
@@ -128,7 +135,7 @@ class Soknad(MandatoryFieldsValidator, Base):
     kommentar = Column(String(700))
     levert_dato = Column(Date, info={'mandatory': True})
     trukket_kommentar = Column(String(700))
-    merknad = Column(String(150))
+    merknad = Column(String(600))
     saksvedlegg = association_proxy("soknad_saksvedlegg", "vedlegg")
     vedlegg = association_proxy("soknad_vedlegg", "vedlegg")
     vedlagtlink = association_proxy("soknad_vedlagtlink", "vedlagtlink")
@@ -350,6 +357,7 @@ class Tilskuddsordning(Base):
     innledningstekst = Column(String, nullable=True)
     prosjekttekst = Column(String, nullable=True)
     budsjettekst = Column(String, nullable=True)
+    husk_ogsa = Column(String(1000), nullable=True)
     godkjenner_id = Column(String, nullable=True)
     godkjenner_tittel = Column(String, nullable=True)
     lenke_til_retningslinjer = Column(String, nullable=True)
@@ -506,7 +514,7 @@ class Vedtak(Base):
     soknad_id = Column(Integer, ForeignKey("soknader.id"), nullable=False)
     innstilt_belop = Column(Integer, nullable=True)
     vedtatt_belop = Column(Integer, nullable=True)
-    intern_merknad = Column(String(300), nullable=True)
+    intern_merknad = Column(String(600), nullable=True)
     vedtaksdato = Column(DateTime, nullable=True)
     vedtakstekst = Column(String(1000))
     andre_opplysninger = Column(String(1000))

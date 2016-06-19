@@ -34,7 +34,7 @@ def create_vedtaksbrev_from_template(soknad, organisation, vedtak):
     tekst_orgnr_eller_fnr, orgnr_eller_fnr = get_organisasjonsnummer_or_foedselsnummer_values(organisation,
                                                                                               soknad.person_id)
     vedtaksbrev = {
-        u'vedtak': u'Tilsagn ' if vedtak.vedtatt_belop is not None else u"Avslag",
+        u'vedtak': u'Tilsagn' if vedtak.vedtatt_belop is not None and vedtak.vedtatt_belop > 0 else u"Avslag",
         u'vedtatt_belop': "%s,00" % vedtak.vedtatt_belop if vedtak.vedtatt_belop is not None else "",
         u'vedtaksdato': vedtaksbrev_datestr(vedtak.vedtaksdato) if vedtak.vedtaksdato is not None else "",
         u'saksbehandler': saksbehandler['profile']['full_name'],
@@ -50,7 +50,9 @@ def create_vedtaksbrev_from_template(soknad, organisation, vedtak):
         u'prosjektnavn': soknad.prosjektnavn if soknad.prosjektnavn is not None else "",
         u'innsendt': vedtaksbrev_datestr(soknad.levert_dato) if soknad.levert_dato is not None else "",
         u'merk_folgende': vedtak.vedtakstekst if vedtak.vedtakstekst is not None else "",
-        u'andre_opplysninger': vedtak.andre_opplysninger if vedtak.andre_opplysninger is not None else ""
+        u'andre_opplysninger': vedtak.andre_opplysninger if vedtak.andre_opplysninger is not None else "",
+        u'husk_ogsa': soknad.tilskuddsordning.husk_ogsa if soknad.tilskuddsordning.husk_ogsa is not None else "",
+        u'tilsagn': True if vedtak.vedtatt_belop is not None and vedtak.vedtatt_belop > 0 else False
     }
 
     message = render_template(u'pdf/vedtak.html', **vedtaksbrev)

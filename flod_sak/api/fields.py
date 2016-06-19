@@ -146,6 +146,7 @@ tilskuddsordning_light_fields = {
     'publisert': fields.Boolean,
     'godkjenner_id': fields.String,
     'godkjenner_tittel': fields.String,
+    'husk_ogsa': fields.String,
     'lenke_til_retningslinjer': fields.String
 }
 
@@ -164,6 +165,7 @@ tilskuddsordning_fields = {
     'godkjenner_id': fields.String,
     'godkjenner_tittel': fields.String,
     'lenke_til_retningslinjer': fields.String,
+    'husk_ogsa': fields.String,
     'saksbehandlere': fields.List(fields.Nested({'saksbehandler_id': fields.String}))
 }
 

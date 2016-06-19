@@ -26,6 +26,7 @@ var Tilskudd = window.Tilskudd || {};
             "#id_innledningstekst": "innledningstekst",
             "#id_prosjekttekst": "prosjekttekst",
             "#id_budsjettekst": "budsjettekst",
+            "#id_husk_ogsa": "husk_ogsa",
             "#id_lenke_til_retningslinjer": "lenke_til_retningslinjer"
         },
 

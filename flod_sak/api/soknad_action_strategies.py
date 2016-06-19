@@ -52,7 +52,7 @@ class VedtakUtils(object):
         vedtak = cls.get_vedtak_for_oppdatering(soknad, data.get('vedtak_id'))
 
         validator = BaseValidator(data)
-        validator.validate_le_max_length("intern_merknad", 300, "merknad")
+        validator.validate_le_max_length("intern_merknad", 600, "merknad")
         validator.validate_is_positive_integer("vedtatt_belop", "vedtatt beløp", requires_value=True)
         if validator.has_errors():
             abort(400, __error__=validator.errors)
@@ -70,7 +70,7 @@ class VedtakUtils(object):
         vedtak = cls.get_vedtak_for_oppdatering(soknad, data.get('vedtak_id'))
 
         validator = BaseValidator(data)
-        validator.validate_le_max_length("intern_merknad", 300, "merknad")
+        validator.validate_le_max_length("intern_merknad", 600, "merknad")
         if validator.has_errors():
             abort(400, __error__=validator.errors)
 
@@ -97,7 +97,7 @@ def til_vedtak_action_strategy(soknad, action, data):
         soknad.vedtak.append(vedtak)
 
     validator = BaseValidator(data)
-    validator.validate_le_max_length("intern_merknad", 300, "merknad")
+    validator.validate_le_max_length("intern_merknad", 600, "merknad")
     validator.validate_le_max_length("vedtakstekst", 1000, "vedtakstekst")
     validator.validate_le_max_length("andre_opplysninger", 1000, "andre_opplysninger")
     validator.validate_is_positive_integer("innstilt_belop", "innstilt beløp", requires_value=True)
@@ -298,7 +298,7 @@ def trekk_action_strategy(soknad, action, data):
 
 def apne_soknad_for_redigering_action_strategy(soknad, action, data):
     validator = BaseValidator(data)
-    validator.validate_le_max_length("merknad", 150, "merknad")
+    validator.validate_le_max_length("merknad", 600, "merknad")
 
     if validator.has_errors():
         abort(400, __error__=validator.errors)

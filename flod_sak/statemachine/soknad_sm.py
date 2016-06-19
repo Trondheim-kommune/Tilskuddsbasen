@@ -17,8 +17,7 @@ class SoknadStateMachine(BaseStateMachine):
     s_vedtak_klaget = BaseState(u"Vedtak påklaget")
     s_til_utbetaling = BaseState(u"Til utbetaling")
     s_avventer_rapport = BaseState(u"Avventer rapport")
-    s_rapport_pabegynt = BaseState(u"Rapport påbegynt", state_name_soker=u"Avventer rapport",
-                                   state_name_saksbehandler=u"Avventer rapport")
+    s_rapport_pabegynt = BaseState(u"Rapport påbegynt", state_name_soker=u"Avventer rapport")
     s_rapport_levert = BaseState(u"Rapport levert")
     s_tilbakebetaling_kreves = BaseState(u"Tilbakebetaling kreves")
     s_til_klagevedtak = BaseState(u"Til klagevedtak")
@@ -52,7 +51,7 @@ class SoknadStateMachine(BaseStateMachine):
     t_krev_tilbakebetaling = BaseTransition("krev_tilbakebetaling", u"Krev tilbakebetaling", s_trukket)
     # OBS: Denne transisjon bruker ikke den angitt statisk end state; den virekelig state blir valgt dynamisk!
     t_godta_vedtak = BaseTransition("godta_vedtak", u"Godta vedtak", s_vedtak_fattet)
-    t_takke_nei = BaseTransition("takke_nei", u"Avslå tilskuddet", s_avsluttet)
+    t_takke_nei = BaseTransition("takke_nei", u"Avslå tilskuddet", s_trukket)
     t_vurder_klage = BaseTransition("vurder_klage", u"Vurder klage", s_til_klagevedtak)
     t_fatt_klagevedtak = BaseTransition("fatt_klagevedtak", u"Fatt klagevedtak", s_vedtak_fattet)
     t_tilbake_til_vurder_klage = BaseTransition("tilbake_til_vurder_klage", u'Tilbake til vurder klage', s_vedtak_klaget)

@@ -98,22 +98,9 @@
 <p >{{ andre_opplysninger|nl2br }}</p>
 {% endif %}
 
-{% if vedtatt_belop > 0 %}
+{% if tilsagn %}
 <h1>Husk også</h1>
-<p >
-    Du er pliktig til å oppbevare regnskap med bilag i minst 5 år.
-    Ved henvendelse må dette kunne legges fram på kort varsel.
-</p>
-<p >
-    Vi ber om at det i program og PR-materiell gjøres oppmerksom på at prosjektet/tiltaket støttes av Trondheim kommune.
-    Trondheim kommunes logo finner du her:
-    <a href="http://www.trondheim.kommune.no/logo" target="_blank">www.trondheim.kommune.no/logo</a>
-</p>
-<p >
-    Vi oppfordrer alle som får kommunalt tilskudd til å legge til rette for at arrangement er tilgjengelig for bevegelseshemmede.
-    Ta gjerne med informasjon om dette i annonsering. Les mer:
-    <a href="http://www.trondheim.kommune.no/universellutforming" target="_blank">www.trondheim.kommune.no/universellutforming</a>
-</p>
+<p >{{ husk_ogsa|nl2br }}</p>
 {% endif %}
 
 </body>

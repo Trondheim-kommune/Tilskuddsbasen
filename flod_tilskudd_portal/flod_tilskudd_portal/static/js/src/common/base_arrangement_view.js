@@ -32,6 +32,14 @@ var Tilskudd = window.Tilskudd || {};
         startDatoEndret: function () {
             var start = moment(this.ui.start_dato.val(), "DD.MM.YYYY");
             var slutt = moment(this.ui.slutt_dato.val(), "DD.MM.YYYY");
+
+            if (start.get('year') < 1900) {
+                this.clearError("start_dato");
+                this.addError("Startdato kan ikke være før 1900", "start_dato");
+            } else {
+                this.clearError("start_dato");
+            }
+
             if (_.isNull(slutt) || (start.diff(slutt, 'days') > 0)) {
                 this.ui.slutt_dato.datepicker('update', new Date(start));
             }
@@ -40,6 +48,15 @@ var Tilskudd = window.Tilskudd || {};
         sluttDatoEndret: function () {
             var start = moment(this.ui.start_dato.val(), "DD.MM.YYYY");
             var slutt = moment(this.ui.slutt_dato.val(), "DD.MM.YYYY");
+
+            if (slutt.get('year') < 1900) {
+                this.clearError("slutt_dato");
+                this.addError("Sluttdato kan ikke være før 1900", "slutt_dato");
+            } else {
+                this.clearError("slutt_dato");
+            }
+
+
             if (_.isNull(start) || (start.diff(slutt, 'days') > 0)) {
                 this.ui.start_dato.datepicker('update', new Date(slutt));
             }
@@ -95,8 +112,18 @@ var Tilskudd = window.Tilskudd || {};
             } else {
                 elem = this.$('#id_' + key).parent('div');
             }
-            elem.addClass("has-error control-group");
+            elem.addClass("has-error");
             elem.append("<span class='control-label help-inline text-error'>" + error + "</span>");
+        },
+        clearError : function(key) {
+            var elem;
+            if (this.options.parent) {
+                elem = this.options.parent;
+            } else {
+                elem = this.$('#id_' + key).parent('div');
+            }
+            elem.removeClass("has-error");
+            elem.children(".text-error").remove();
         }
     });
 
