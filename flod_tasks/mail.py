@@ -15,7 +15,7 @@ def smtp_server():
     username = os.environ.get('MAIL_USERNAME', '')
     password = os.environ.get('MAIL_PASSWORD', '')
     tls = os.environ.get('MAIL_USE_TLS', False)
-    server = smtplib.SMTP(host, port, timeout=10)
+    server = smtplib.SMTP(host, port, timeout=30)
     if tls:
         server.starttls()
     # Username or password equal to '' implies no login.

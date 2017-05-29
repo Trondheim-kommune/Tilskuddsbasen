@@ -4,9 +4,9 @@ Trondheim kommune bekrefter å ha mottatt din søknad om tilskudd. Behandlingsti
 
 Svar på søknaden blir sendt til denne e-post-adressen.
 
-For å se status på din søknad kan du logge inn her: https://tilskudd.trondheim.kommune.no/soknad/{{ soknad_id }}
+For å se status på din søknad kan du når som helst logge inn her: https://tilskudd.trondheim.kommune.no/soknad/{{ soknad_id }}
 
-Dette er en automatisk generert e-post som ikke kan besvares.
+Gi oss gjerne tilbakemelding på din opplevelse av Tilskuddsbasen, ved å svare på noen få spørsmål: https://response.questback.com/trondheimkommune/nilovt3aho/
 
 Med vennlig hilsen
 Trondheim kommune

@@ -41,7 +41,7 @@ class SoknadStateMachine(BaseStateMachine):
     t_avslutt = BaseTransition("avslutt", u"Avslutt", s_avsluttet)
     t_vedtak_klaget = BaseTransition("klage", u"Klage på vedtak", s_vedtak_klaget)
     t_oppretthold_klage = BaseTransition("oppretthold_klage", u"Oppretthold klage", s_vedtak_klaget)
-    t_rediger_rapportfrist = BaseTransition("redigere_rapportfrist", u"Rediger rapportfrist", s_rapport_pabegynt)
+    t_rediger_rapportfrist = BaseTransition("redigere_rapportfrist", u"Utsett rapportfrist eller send rapport tilbake til søker", s_rapport_pabegynt)
     t_lever_rapport = BaseTransition("lever_rapport", u"Send rapport", s_rapport_levert)
     # OBS: Denne transisjon bruker ikke den angitt statisk end state; den virekelig state blir valgt dynamisk!
     t_godkjenn_rapport = BaseTransition("godkjenn_rapport", u"Godkjenn rapport", s_rapport_levert)
