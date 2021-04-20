@@ -19,5 +19,5 @@ pip-tools==0.3.4
 requests==2.2.1
 responses==0.2.0
 webassets==0.9
-Werkzeug==0.9.4
+Werkzeug==0.15.3
 xhtml2pdf==0.2b1
