@@ -14,7 +14,7 @@ isodate==0.5.0
 itsdangerous==0.24
 Jinja2==2.7.2
 kombu==3.0.37
-lxml==3.3.5
+lxml==4.6.5
 Mako==0.9.1
 MarkupSafe==0.21
 mock==1.0.1
