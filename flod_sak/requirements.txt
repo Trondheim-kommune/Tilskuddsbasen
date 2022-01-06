@@ -31,5 +31,5 @@ validate-email==1.2
 Werkzeug==0.9.4
 bouncer==0.1.10
 flask-bouncer==0.1.13
-celery==3.1.13
+celery==5.2.2
 xhtml2pdf==0.2b1
